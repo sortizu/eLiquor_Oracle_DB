@@ -422,18 +422,21 @@ public class LoginPIN extends javax.swing.JPanel {
     
     private void verificarPassword(){
         try{
+            boolean [] permisos = ControlMenu.cargarPermisosDeUsuario(idUsuarioSeleccionado);
             int ps = Integer.parseInt(String.valueOf(txtpassword.getPassword()).trim());
             if(ControlLogin.verificarPassword(idUsuarioSeleccionado, ps)){
                 UtilidadSesion.idUsuarioActual=idUsuarioSeleccionado;
                 UtilidadSesion.nombreUsuarioActual=nombreDeUsuarioSeleccionado.getText();
+                
                 JPanel parent = (JPanel)getParent();
                 CardLayout layout = (CardLayout) parent.getParent().getLayout();
                 //Instanciando el panel contenedor del menu y los otros modulos
                 Presentacion.Interfaces.Menu.Menu menu=
-                        new Presentacion.Interfaces.Menu.Menu(nombreDeUsuarioSeleccionado.getText(),ControlMenu.cargarPermisosDeUsuario(idUsuarioSeleccionado));
+                        new Presentacion.Interfaces.Menu.Menu(nombreDeUsuarioSeleccionado.getText(),permisos);
                 parent.getParent().add("menu",menu);
                 layout.show(parent.getParent(), "menu");
                 ((CardLayout)parent.getLayout()).show(parent, "loginUsuarios");
+                
             }else{
                 throw new Exception("La contraseña no coincide");
             }

@@ -15,78 +15,50 @@ public class ConfiguracionDAO implements CRUD{
     ResultSet rs;
     @Override
     public int add(Object[] o) {
-        int r = 0;
-        int id=setLastId()+1;
-        String sql = 
-            "insert into sistema(razonSocial, numeroTerminal, RUC, telefono, codigoTienda, ciudad, provincia, distrito, direccion, codigoPostal, idSistema)values(?,?,?,?,?,?,?,?,?,?,?)";
-        try{
-            con = cn.Conectar();
-            ps = con.prepareStatement(sql);
-            ps.setObject(1, o[0]);
-            ps.setObject(2, o[1]);
-            ps.setObject(3, o[2]);
-            ps.setObject(4, o[3]);
-            ps.setObject(5, o[4]);
-            ps.setObject(6, o[5]);
-            ps.setObject(7, o[6]);
-            ps.setObject(8, o[7]);
-            ps.setObject(9, o[8]);
-            ps.setObject(10, o[9]);
-            ps.setObject(11, o[10]);
-            r = ps.executeUpdate();
-        }catch(SQLException e){
-             System.out.println(e.toString());
-         }
-        return r;
+        return 0;
     }
     
 
     @Override
     public List listar() {
-        List<Configuracion> lista = new ArrayList<>();
-        String sql = "select * from sistema";
+        return null;
+    }
+
+    public Configuracion cargarConfiguracionSistema(){
+        Configuracion c = null;
+        String sql = "select * from VW_CONFIGURACION_SISTEMA";
         try{
             con = cn.Conectar();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
-            while(rs.next()){
-                Configuracion c = new Configuracion();
-                c.setIdSistema(rs.getInt(1));
-                c.setRazonSocial(rs.getString(2));
-                c.setNumeroTerminal(rs.getInt(3));
-                c.setRUC(rs.getString(4));
-                c.setTelefono(rs.getInt(5));
-                c.setCodigoTienda(rs.getString(6));
-                c.setCiudad(rs.getString(7));
-                c.setProvincia(rs.getString(8));
-                c.setDistrito(rs.getString(9));
-                c.setDireccion(rs.getString(10));
-                c.setCodigoPostal(rs.getInt(11));
-                lista.add(c);
-            }
+            rs.next();
+            c = new Configuracion(0,
+            rs.getString(3),
+            rs.getString(1),
+            rs.getInt(2),
+            rs.getString(5),
+            rs.getInt(4),
+            rs.getString(7),
+            rs.getString(8),
+            rs.getString(6),
+            rs.getString(9),
+            rs.getInt(10));
         }catch(SQLException e){
              System.out.println(e.toString());
          }
-        return lista;
+        return c;
     }
-
+    
     @Override
-    public void eliminar(int id) {
-        String sql = "delete from sistema where idSistema=?";
-        try{
-           con = cn.Conectar();
-           ps = con.prepareStatement(sql);
-           ps.setInt(1,id);
-           ps.executeUpdate();
-       }catch(SQLException e){
-            System.out.println(e.toString());
-        }
-    }
+    public void eliminar(int id) {}
 
     @Override
     public int actualizar(Object[] o) {
         int r = 0;
-        String sql = "update sistema set razonSocial=?,numeroTerminal=?,RUC=?,telefono=?,codigoTienda=?,ciudad=?,provincia=?,distrito=?,direccion=?,codigoPostal=? where IdSistema=?";
+        System.out.println(cn.getUser());
+        String sql = "BEGIN "
+                    + "SP_GUARDAR_CONFIGURACION(?,?,?,?,?,?,?,?,?,?);"
+                    + "END;";
         try{
            con = cn.Conectar();
            ps = con.prepareStatement(sql);
@@ -100,7 +72,6 @@ public class ConfiguracionDAO implements CRUD{
            ps.setObject(8, o[7]);
            ps.setObject(9, o[8]);
            ps.setObject(10,o[9]);
-           ps.setObject(11, o[10]);
            r = ps.executeUpdate();
        }catch(SQLException e){
             System.out.println(e.toString());
@@ -108,22 +79,4 @@ public class ConfiguracionDAO implements CRUD{
        return r;
     }
     
-    public int setLastId(){
-        int id=1;
-       String sql = "SELECT MAX(idSistema) from sistema;";
-       try{
-           con = cn.Conectar();
-           ps = con.prepareStatement(sql);
-           rs = ps.executeQuery();
-           
-           rs.beforeFirst();
-           rs.next();
-           
-           id = rs.getInt(1);
-           
-       }catch(SQLException e){
-            System.out.println(e.toString());
-        }
-       return id;
-    } 
 }

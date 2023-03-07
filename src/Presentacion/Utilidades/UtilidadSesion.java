@@ -11,7 +11,7 @@ public class UtilidadSesion {
     public static int idUsuarioActual;
     public static String nombreUsuarioActual;
     public static Configuracion configuracionActual;
-    /*
+    
     static {
         Configuracion tempConf=ControlConfiguracion.cargarConfiguracion();
         if(tempConf==null){
@@ -25,9 +25,9 @@ public class UtilidadSesion {
             configuracionActual.setDistrito("");
             configuracionActual.setCiudad("");
             configuracionActual.setDireccion("");
-            ControlConfiguracion.agregarConfiguracion(configuracionActual);
+            ControlConfiguracion.aplicarCambios(configuracionActual);
         }else{
             configuracionActual=tempConf;
         }
-    }*/
+    }
 }

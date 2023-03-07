@@ -4,6 +4,7 @@
  */
 package Presentacion.Interfaces;
 
+import Datos.DAO.Conexion;
 import Presentacion.Utilidades.UtilidadesFuentes;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -69,6 +70,8 @@ public class VentanaSalir extends VentanaEmergente{
     public void btnAceptarPresionado(MouseEvent evt) {
         int opcionSeleccionada = selectorSalir.getOpcionSeleccionada();
         if(opcionSeleccionada==0){
+            Conexion cn = new Conexion();
+            cn.setStaticRootConfiguration();
             Container cardPanel = parent.getParent();
             CardLayout layout= (CardLayout) cardPanel.getLayout();
             layout.show(cardPanel, "login");

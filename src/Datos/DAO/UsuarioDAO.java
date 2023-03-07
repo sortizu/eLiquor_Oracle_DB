@@ -76,7 +76,6 @@ public class UsuarioDAO implements CRUD{
         List<Usuario> lista = new ArrayList<>();
         String sql = "SELECT * FROM VW_USUARIOS_ACTIVOS";
         try{
-            cn.setStaticRootConfiguration();
             con = cn.Conectar();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -98,7 +97,6 @@ public class UsuarioDAO implements CRUD{
         String result = "";
         String sql = "SELECT F_OBTENER_USUARIO("+usuarioID+") FROM DUAL";
         try{
-            cn.setStaticRootConfiguration();
             con = cn.Conectar();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();

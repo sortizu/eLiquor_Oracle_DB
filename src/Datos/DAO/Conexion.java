@@ -32,4 +32,8 @@ public class Conexion {
         pass=newPass;
     }
 
+    public static String getUser() {
+        return user;
+    }
+    
 }

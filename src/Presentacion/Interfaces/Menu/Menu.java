@@ -38,6 +38,7 @@ public class Menu extends javax.swing.JPanel {
         btnModuloClientes.setEnabled(permisos[3]);
         btnModuloInventario.setEnabled(permisos[4]);
         btnModuloReportes.setEnabled(permisos[5]);
+        btnConfiguracion.setEnabled(permisos[6]);
         lblUsuario.setText("¡Bienvenido, "+nombreUsuario.split(" ")[0]+"!");
         LocalDate fecha = LocalDate.now();
         lblDia.setText(fecha.format(DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' YYYY", new Locale("es", "ES"))));
@@ -50,7 +51,7 @@ public class Menu extends javax.swing.JPanel {
                 lblCodigoTienda.setText("Código de Tienda: "+UtilidadSesion.configuracionActual.getCodigoTienda());
             }
         });
-        
+
     }
     
     /**
@@ -454,11 +455,13 @@ public class Menu extends javax.swing.JPanel {
     }//GEN-LAST:event_btnModuloClientesMouseReleased
 
     private void btnConfiguracionMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfiguracionMouseReleased
-        JPanel parent = (JPanel)getParent();
-        CardLayout layout = (CardLayout) parent.getLayout();
-        Presentacion.Interfaces.Configuracion.Configuracion configuracion = new Presentacion.Interfaces.Configuracion.Configuracion(parent);
-        parent.add("configuracion",configuracion);
-        layout.show(parent, "configuracion");
+        if (btnConfiguracion.isEnabled()){
+            JPanel parent = (JPanel)getParent();
+            CardLayout layout = (CardLayout) parent.getLayout();
+            Presentacion.Interfaces.Configuracion.Configuracion configuracion = new Presentacion.Interfaces.Configuracion.Configuracion(parent);
+            parent.add("configuracion",configuracion);
+            layout.show(parent, "configuracion");
+        }
     }//GEN-LAST:event_btnConfiguracionMouseReleased
 
     private void btnAyudaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAyudaMouseReleased

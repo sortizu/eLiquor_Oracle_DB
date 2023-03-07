@@ -16,46 +16,23 @@ public class ControlConfiguracion {
     public static void aplicarCambios(Configuracion nuevaConfiguracion){
         ConfiguracionDAO cfdao = new ConfiguracionDAO();
         Object[] datos = {
-            nuevaConfiguracion.getRazonSocial(),
-            nuevaConfiguracion.getNumeroTerminal(),
             nuevaConfiguracion.getRUC(),
+            nuevaConfiguracion.getNumeroTerminal(),
+            nuevaConfiguracion.getRazonSocial(),
             nuevaConfiguracion.getTelefono(),
             nuevaConfiguracion.getCodigoTienda(),
             nuevaConfiguracion.getCiudad(),
             nuevaConfiguracion.getProvincia(),
             nuevaConfiguracion.getDistrito(),
             nuevaConfiguracion.getDireccion(),
-            nuevaConfiguracion.getCodigoPostal(),1
+            nuevaConfiguracion.getCodigoPostal()
         };
         cfdao.actualizar(datos);
     }
     
     public static Configuracion cargarConfiguracion(){
-        int idACargar=1;
         ConfiguracionDAO cfdao = new ConfiguracionDAO();
-        for(Configuracion c : (ArrayList<Configuracion>)cfdao.listar()){
-            if(c.getIdSistema()==idACargar){
-                return c;
-            }
-        }
-        return null;
+        return cfdao.cargarConfiguracionSistema();
     }
     
-    public static void agregarConfiguracion(Configuracion nuevaConfiguracion){
-        ConfiguracionDAO cfdao = new ConfiguracionDAO();
-        Object [] datos ={
-            nuevaConfiguracion.getRazonSocial(),
-            nuevaConfiguracion.getNumeroTerminal(),
-            nuevaConfiguracion.getRUC(),
-            nuevaConfiguracion.getTelefono(),
-            nuevaConfiguracion.getCodigoTienda(),
-            nuevaConfiguracion.getCiudad(),
-            nuevaConfiguracion.getProvincia(),
-            nuevaConfiguracion.getDistrito(),
-            nuevaConfiguracion.getDireccion(),
-            nuevaConfiguracion.getCodigoPostal(),
-            nuevaConfiguracion.getIdSistema()
-        };
-        cfdao.add(datos);
-    }
 }

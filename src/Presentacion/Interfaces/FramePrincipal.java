@@ -4,6 +4,7 @@
  */
 package Presentacion.Interfaces;
 
+import Datos.DAO.Conexion;
 import Presentacion.Interfaces.Clientes.Clientes;
 import Presentacion.Utilidades.UtilidadSesion;
 import java.awt.CardLayout;
@@ -41,6 +42,9 @@ public class FramePrincipal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         //setSize(Toolkit.getDefaultToolkit().getScreenSize());
         //setExtendedState(MAXIMIZED_BOTH);
+        //Configuracion del inicio de sesion a la Base de datos
+        Conexion cn = new Conexion();
+        cn.setStaticRootConfiguration();
         //Configuracion del overlay (Ventanas desplegables)
         JPanel overlay=new JPanel(){
             @Override
