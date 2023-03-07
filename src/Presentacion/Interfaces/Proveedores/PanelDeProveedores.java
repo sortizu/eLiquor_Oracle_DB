@@ -237,6 +237,7 @@ public class PanelDeProveedores extends JPanel implements PropertyChangeListener
     }
 
     public void cargarListaDeProveedores(){
+        tablaProveedores.getModeloTabla().setRowCount(0);
         proveedores=ControlProveedores.cargarListaDeProveedores();
         for(Proveedor p: proveedores){
             agregarProveedorATabla(p);

@@ -24,22 +24,12 @@ public class ControlProveedores {
     
     public static Entrega cargarUltimaEntregaProveedor(int idProveedor){
         EntregaDAO edao = new EntregaDAO();
-        ArrayList<Entrega> entregas = (ArrayList<Entrega>)edao.listarXProveedor(idProveedor);
-        Entrega ultimaEntrega = null;
-        if(entregas.size()>0){
-            ultimaEntrega=entregas.get(0);
-            for(int i = 1; i<entregas.size();i++){
-                if(ultimaEntrega.getFechaEntrega().compareTo(entregas.get(i).getFechaEntrega())<0){
-                    ultimaEntrega=entregas.get(i);
-                }
-            }
-        }
-        return ultimaEntrega;
+        return edao.ObtenerUltimaEntregaDeProveedor(idProveedor);
     }
     
     public static void agregarProveedor(Proveedor proveedor){
         ProveedorDAO pdao=new ProveedorDAO();
-        pdao.add(new Object[]{proveedor.getRazonSocial(),proveedor.getCorreo(),proveedor.getTelefono(),proveedor.getFechaRegistro(),proveedor.getIdProveedor()});
+        pdao.add(new Object[]{proveedor.getRazonSocial(),proveedor.getTelefono(),proveedor.getCorreo()});
     }
     
     public static void eliminarProveedores(ArrayList<Proveedor> proveedores){
@@ -51,12 +41,8 @@ public class ControlProveedores {
     
     public static void modificarProveedor(Proveedor proveedor){
         ProveedorDAO pdao=new ProveedorDAO();
-        Object[] datos={proveedor.getRazonSocial(),proveedor.getCorreo(),proveedor.getTelefono(),proveedor.getFechaRegistro(),proveedor.getIdProveedor()};
+        Object[] datos={proveedor.getIdProveedor(),proveedor.getRazonSocial(),proveedor.getTelefono(),proveedor.getCorreo()};
         pdao.actualizar(datos);
     }
     
-    public static int obtenerUltimoID(){
-        ProveedorDAO pdao=new ProveedorDAO();
-        return pdao.setLastId();
-    }
 }

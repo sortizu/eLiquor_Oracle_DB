@@ -174,10 +174,9 @@ public class AgregarProveedores extends VentanaEmergente{
             try{
                 telefono=Integer.parseInt(txtTelefono.getText());
             }catch(Exception er){System.err.println(er);}
-            Proveedor nuevoProveedor = new Proveedor(ControlProveedores.obtenerUltimoID()+1,txtRazonSocial.getText(),txtCorreo.getText(),telefono,LocalDate.now());
-            panelPrincipalDeModuloDeProveedores.proveedores.add(nuevoProveedor);
-            panelPrincipalDeModuloDeProveedores.agregarProveedorATabla(nuevoProveedor);
+            Proveedor nuevoProveedor = new Proveedor(0,txtRazonSocial.getText(),txtCorreo.getText(),telefono,LocalDate.now());
             ControlProveedores.agregarProveedor(nuevoProveedor);
+            panelPrincipalDeModuloDeProveedores.cargarListaDeProveedores();
             ((FramePrincipal)((JFrame) SwingUtilities.getWindowAncestor(this))).cerrarPanelesEmergentes();   
         }
     }

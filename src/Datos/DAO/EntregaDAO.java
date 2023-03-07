@@ -3,6 +3,7 @@ package Datos.DAO;
 import Datos.Entidades.Entrega;
 import java.util.List;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 /**
  *
@@ -58,26 +59,30 @@ public class EntregaDAO implements CRUD{
         return lista;
     }
     
-    public List listarXProveedor(int idProveedor) {
-        List<Entrega> lista = new ArrayList<>();
-        String sql = "select * from ProveedorProducto where idProveedor=?";
+    public Entrega ObtenerUltimaEntregaDeProveedor(int idProveedor) {
+        Entrega u = null;
+        String sql =  "select * from VW_ULTIMA_ENTREGA";
         try{
             con = cn.Conectar();
+            ps = con.prepareStatement(
+                 "BEGIN "
+                + "ROOT_PROVEEDOR.V_PROVEEDOR_ID_ULT_ENT:="+idProveedor+";"
+                + "END;"
+            );
+            ps.executeUpdate();
             ps = con.prepareStatement(sql);
-            ps.setObject(1, idProveedor);
             rs = ps.executeQuery();
-            while(rs.next()){
-                Entrega u = new Entrega();
-                u.setIdEntrega(rs.getInt(1));
-                u.setCosto(rs.getDouble(2));
-                u.setCantidad(rs.getInt(3));
-                u.setFechaEntrega(rs.getDate(4).toLocalDate());
-                lista.add(u);
-            }
+            rs.next();
+            u = new Entrega(0, 
+                    null,
+                    rs.getInt(3),
+                    0,
+                    null, 
+                    rs.getDate(4).toLocalDate());
         }catch(SQLException e){
              System.out.println(e.toString());
          }
-        return lista;
+        return u;
     }
 
     @Override

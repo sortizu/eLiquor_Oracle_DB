@@ -16,18 +16,16 @@ public class ProveedorDAO implements CRUD{
     @Override
     public int add(Object[] o) {
         int r = 0;
-        int id=setLastId()+1;
         String sql = 
-            "insert into proveedor(razonSocial, correo, telefono, fechaRegistro,estadoEliminacion,idProveedor)values(?,?,?,?,?,?)";
+            "BEGIN "
+            +"SP_AGREGAR_PROVEEDOR(?,?,?);"
+            +"END;";
         try{
             con = cn.Conectar();
             ps = con.prepareStatement(sql);
             ps.setObject(1, o[0]);
             ps.setObject(2, o[1]);
             ps.setObject(3, o[2]);
-            ps.setObject(4, o[3]);
-            ps.setObject(5, 0);
-            ps.setObject(6, id);
             r = ps.executeUpdate();
         }catch(SQLException e){
              System.out.println(e.toString());
@@ -39,7 +37,7 @@ public class ProveedorDAO implements CRUD{
     @Override
     public List listar() {
         List<Proveedor> lista = new ArrayList<>();
-        String sql = "select * from proveedor where estadoEliminacion=0";
+        String sql = "select * from VW_TOTAL_PROVEEDORES";
         try{
             con = cn.Conectar();
             ps = con.prepareStatement(sql);
@@ -73,12 +71,14 @@ public class ProveedorDAO implements CRUD{
     }
 
     public void eliminacionLogica(int id){
-        String sql = "update proveedor set estadoEliminacion=? where IdProveedor=?";
+        String sql = 
+            "BEGIN "
+            +"SP_ELIMINAR_PROVEEDOR(?);"
+            +"END;";
         try{
            con = cn.Conectar();
            ps = con.prepareStatement(sql);
-           ps.setInt(1, 1);
-           ps.setInt(2, id);
+           ps.setInt(1, id);
            ps.executeUpdate();
        }catch(SQLException e){
             System.out.println(e.toString());
@@ -88,7 +88,10 @@ public class ProveedorDAO implements CRUD{
     @Override
     public int actualizar(Object[] o) {
         int r = 0;
-        String sql = "update proveedor set razonSocial=?,correo=?,telefono=?,fechaRegistro=? where IdProveedor=?";
+        String sql = 
+            "BEGIN "
+            +"SP_MODIFICAR_PROVEEDOR(?,?,?,?);"
+            +"END;";
         try{
            con = cn.Conectar();
            ps = con.prepareStatement(sql);
@@ -96,30 +99,10 @@ public class ProveedorDAO implements CRUD{
            ps.setObject(2, o[1]);
            ps.setObject(3, o[2]);
            ps.setObject(4, o[3]);
-           ps.setObject(5, o[4]);
            r = ps.executeUpdate();
        }catch(SQLException e){
             System.out.println(e.toString());
         }
        return r;
     }
-    
-    public int setLastId(){
-        int id=1;
-       String sql = "SELECT MAX(idProveedor) from proveedor;";
-       try{
-           con = cn.Conectar();
-           ps = con.prepareStatement(sql);
-           rs = ps.executeQuery();
-           
-           rs.beforeFirst();
-           rs.next();
-           
-           id = rs.getInt(1);
-           
-       }catch(SQLException e){
-            System.out.println(e.toString());
-        }
-       return id;
-    } 
 }
