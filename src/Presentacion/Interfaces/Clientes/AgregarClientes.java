@@ -174,10 +174,9 @@ public class AgregarClientes extends VentanaEmergente{
             try{
                 telefono=Integer.parseInt(txtTelefono.getText());
             }catch(Exception er){System.err.println(er);}
-            Cliente nuevoCliente = new Cliente(ControlClientes.obtenerUltimoID()+1,txtNombre.getText(),txtCorreo.getText(),telefono,LocalDate.now());
-            panelPrincipalDeModuloDeClientes.clientes.add(nuevoCliente);
-            panelPrincipalDeModuloDeClientes.agregarClienteATabla(nuevoCliente);
+            Cliente nuevoCliente = new Cliente(0,txtNombre.getText(),txtCorreo.getText(),telefono,LocalDate.now());
             ControlClientes.agregarCliente(nuevoCliente);
+            panelPrincipalDeModuloDeClientes.cargarListaDeClientes();
             ((FramePrincipal)((JFrame) SwingUtilities.getWindowAncestor(this))).cerrarPanelesEmergentes();   
         }
     }

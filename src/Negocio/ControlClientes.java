@@ -21,7 +21,7 @@ public class ControlClientes {
     
     public static void agregarCliente(Cliente Cliente){
         ClienteDAO cdao=new ClienteDAO();
-        cdao.add(new Object[]{Cliente.getNombre(),Cliente.getCorreo(),Cliente.getTelefono(),Cliente.getFechaRegistro(),Cliente.getIdCliente()});
+        cdao.add(new Object[]{Cliente.getNombre(),Cliente.getTelefono(),Cliente.getCorreo(),Cliente.getFechaRegistro(),Cliente.getIdCliente()});
     }
     
     public static void eliminarClientes(ArrayList<Cliente> Clientes){
@@ -33,12 +33,7 @@ public class ControlClientes {
     
     public static void modificarCliente(Cliente Cliente){
         ClienteDAO cdao=new ClienteDAO();
-        Object[] datos={Cliente.getNombre(),Cliente.getCorreo(),Cliente.getTelefono(),Cliente.getFechaRegistro(),Cliente.getIdCliente()};
+        Object[] datos={Cliente.getIdCliente(),Cliente.getNombre(),Cliente.getTelefono(),Cliente.getCorreo()};
         cdao.actualizar(datos);
-    }
-    
-    public static int obtenerUltimoID(){
-        ClienteDAO cdao=new ClienteDAO();
-        return cdao.setLastId();
     }
 }

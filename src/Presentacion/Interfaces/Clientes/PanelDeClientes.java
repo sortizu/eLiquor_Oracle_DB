@@ -236,6 +236,7 @@ public class PanelDeClientes extends JPanel implements PropertyChangeListener{
     }
 
     public void cargarListaDeClientes(){
+        tablaClientes.getModeloTabla().setRowCount(0);
         clientes=ControlClientes.cargarListaDeClientes();
         for(Cliente p: clientes){
             agregarClienteATabla(p);
