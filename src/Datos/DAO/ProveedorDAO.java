@@ -18,7 +18,7 @@ public class ProveedorDAO implements CRUD{
         int r = 0;
         String sql = 
             "BEGIN "
-            +"SP_AGREGAR_PROVEEDOR(?,?,?);"
+            +"ROOT.SP_AGREGAR_PROVEEDOR(?,?,?);"
             +"END;";
         try{
             con = cn.Conectar();
@@ -37,7 +37,7 @@ public class ProveedorDAO implements CRUD{
     @Override
     public List listar() {
         List<Proveedor> lista = new ArrayList<>();
-        String sql = "select * from VW_TOTAL_PROVEEDORES";
+        String sql = "select * from ROOT.VW_TOTAL_PROVEEDORES";
         try{
             con = cn.Conectar();
             ps = con.prepareStatement(sql);
@@ -73,7 +73,7 @@ public class ProveedorDAO implements CRUD{
     public void eliminacionLogica(int id){
         String sql = 
             "BEGIN "
-            +"SP_ELIMINAR_PROVEEDOR(?);"
+            +"ROOT.SP_ELIMINAR_PROVEEDOR(?);"
             +"END;";
         try{
            con = cn.Conectar();
@@ -90,7 +90,7 @@ public class ProveedorDAO implements CRUD{
         int r = 0;
         String sql = 
             "BEGIN "
-            +"SP_MODIFICAR_PROVEEDOR(?,?,?,?);"
+            +"ROOT.SP_MODIFICAR_PROVEEDOR(?,?,?,?);"
             +"END;";
         try{
            con = cn.Conectar();
