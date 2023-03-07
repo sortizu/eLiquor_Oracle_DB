@@ -18,7 +18,7 @@ public class ClienteDAO implements CRUD{
         int r = 0;
         String sql = 
             "BEGIN "
-            +"ROOT.SP_AGREGAR_CLIENTE(?,?,?);"
+            +"SP_AGREGAR_CLIENTE(?,?,?);"
             +"END;";
         try{
             con = cn.Conectar();
@@ -37,7 +37,7 @@ public class ClienteDAO implements CRUD{
     @Override
     public List listar() {
         List<Cliente> lista = new ArrayList<>();
-        String sql = "select * from ROOT.VW_TOTAL_CLIENTES";
+        String sql = "select * from VW_TOTAL_CLIENTES";
         try{
             con = cn.Conectar();
             ps = con.prepareStatement(sql);
@@ -73,7 +73,7 @@ public class ClienteDAO implements CRUD{
     public void eliminacionLogica(int id){
         String sql = 
             "BEGIN "
-            +"ROOT.SP_ELIMINAR_CLIENTE(?);"
+            +"SP_ELIMINAR_CLIENTE(?);"
             +"END;";
         try{
            con = cn.Conectar();
@@ -90,7 +90,7 @@ public class ClienteDAO implements CRUD{
         int r = 0;
         String sql = 
             "BEGIN "
-            +"ROOT.SP_MODIFICAR_CLIENTE(?,?,?,?);"
+            +"SP_MODIFICAR_CLIENTE(?,?,?,?);"
             +"END;";
         try{
            con = cn.Conectar();

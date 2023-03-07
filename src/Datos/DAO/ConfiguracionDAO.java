@@ -55,8 +55,9 @@ public class ConfiguracionDAO implements CRUD{
     @Override
     public int actualizar(Object[] o) {
         int r = 0;
+        System.out.println(cn.getUser());
         String sql = "BEGIN "
-                    + "ROOT.SP_GUARDAR_CONFIGURACION(?,?,?,?,?,?,?,?,?,?);"
+                    + "SP_GUARDAR_CONFIGURACION(?,?,?,?,?,?,?,?,?,?);"
                     + "END;";
         try{
            con = cn.Conectar();

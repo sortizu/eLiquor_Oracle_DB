@@ -152,7 +152,6 @@ CREATE ROLE POS_ADMIN;
 GRANT SELECT, INSERT, UPDATE ON ROOT.USUARIO TO POS_ADMIN;
 GRANT SELECT, INSERT, UPDATE ON ROOT.PERMISOS TO POS_ADMIN;
 GRANT SELECT, INSERT, UPDATE ON ROOT.SISTEMA TO POS_ADMIN;
-GRANT EXECUTE ON ROOT.SP_GUARDAR_CONFIGURACION TO POS_ADMIN;
 GRANT POS_EMPLEADO TO POS_ADMIN;
 --AGREGANDO LOS DOS TIPOS DE ROLES SEGUN LOS PERMISOS
 --PERMISOS DE EMPLEADO
@@ -568,16 +567,8 @@ END;
 
 
 
-/*
---Limpiar BD
-DELETE FROM ROOT.USUARIO;
-DELETE FROM ROOT.CLIENTE;
-DELETE FROM ROOT.PROVEEDOR;
-*/
---Creacion de usuario default para configuracion de sistema
-BEGIN
-  SP_AGREGAR_USUARIO_ADMIN('ADMINISTRADOR',1234);
-END;
+
+
 --Pruebas
 select * from dba_role_privs connect by prior granted_role = grantee start with grantee = '&USER' order by 1,2,3;
 select * from dba_sys_privs  where grantee = '&USER' or grantee in (select granted_role from dba_role_privs connect by prior granted_role = grantee start with grantee = '&USER') order by 1,2,3;
