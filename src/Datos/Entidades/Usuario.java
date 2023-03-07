@@ -16,8 +16,8 @@ public class Usuario {
     private boolean gestionarClientes;
     private boolean gestionarInventario;
     private boolean generarReportes;
+    private boolean accesoConfiguracion = false;
     private boolean estado;
-    private LocalDate ultimoIngreso;
     private LocalDate fechaRegistro;
     
     public Usuario() {
@@ -118,20 +118,20 @@ public class Usuario {
         this.estado = estado;
     }
 
-    public LocalDate getUltimoIngreso() {
-        return ultimoIngreso;
-    }
-
-    public void setUltimoIngreso(LocalDate ultimoIngreso) {
-        this.ultimoIngreso = ultimoIngreso;
-    }
-
     public LocalDate getFechaRegistro() {
         return fechaRegistro;
     }
 
     public void setFechaRegistro(LocalDate fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
+    }
+
+    public boolean isAccesoConfiguracion() {
+        return accesoConfiguracion;
+    }
+
+    public void setAccesoConfiguracion(boolean accesoConfiguracion) {
+        this.accesoConfiguracion = accesoConfiguracion;
     }
     
 }

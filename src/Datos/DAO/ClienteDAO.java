@@ -39,7 +39,7 @@ public class ClienteDAO implements CRUD{
     @Override
     public List listar() {
         List<Cliente> lista = new ArrayList<>();
-        String sql = "select * from cliente where estadoEliminacion=0";
+        String sql = "select * from VW_TOTAL_CLIENTES";
         try{
             con = cn.Conectar();
             ps = con.prepareStatement(sql);

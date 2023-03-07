@@ -247,7 +247,7 @@ public class PanelDeUsuarios extends JPanel implements PropertyChangeListener{
         {
             p.getNombre(),
             p.isEstado()?"Activo":"Inactivo",
-            p.getUltimoIngreso()!=null?p.getUltimoIngreso().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")):"",
+            "",
             p.getFechaRegistro().format(DateTimeFormatter.ofPattern("dd/MM/YYYY"))
         };
         tablaUsuarios.getModeloTabla().addRow(datos);

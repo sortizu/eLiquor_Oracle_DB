@@ -1,5 +1,6 @@
 package Negocio;
 
+import Datos.DAO.Conexion;
 import Datos.DAO.UsuarioDAO;
 import Datos.Entidades.Usuario;
 import java.util.List;
@@ -24,11 +25,16 @@ public class ControlLogin {
     solo un usuario a la vez, sin tener que recorrer a todos los usuarios tal
     como se hacer ahora.
     */
-    public static boolean verificarPassword(int indice, int ps){
+    public static boolean verificarPassword(int usuarioID, int ps){
         UsuarioDAO udao = new UsuarioDAO();
-        List<Usuario> usuarios=udao.listarUsuarioActivos();
-        /*Se usa el id como indice porque internamente los id se definen segun
-        el orden de registro*/
-        return usuarios.get(indice).getPIN()==ps;
+        String nombreUsuario = udao.obtenerNombreUsuario(usuarioID);
+        try {
+            Conexion cn=new Conexion();
+            cn.setStaticUserConfiguration(nombreUsuario, Integer.toString(ps));
+            cn.Conectar();
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }

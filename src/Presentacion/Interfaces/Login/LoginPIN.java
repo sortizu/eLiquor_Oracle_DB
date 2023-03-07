@@ -423,14 +423,14 @@ public class LoginPIN extends javax.swing.JPanel {
     private void verificarPassword(){
         try{
             int ps = Integer.parseInt(String.valueOf(txtpassword.getPassword()).trim());
-            if(ControlLogin.verificarPassword(indiceSeleccion, ps)){
+            if(ControlLogin.verificarPassword(idUsuarioSeleccionado, ps)){
                 UtilidadSesion.idUsuarioActual=idUsuarioSeleccionado;
                 UtilidadSesion.nombreUsuarioActual=nombreDeUsuarioSeleccionado.getText();
                 JPanel parent = (JPanel)getParent();
                 CardLayout layout = (CardLayout) parent.getParent().getLayout();
                 //Instanciando el panel contenedor del menu y los otros modulos
                 Presentacion.Interfaces.Menu.Menu menu=
-                        new Presentacion.Interfaces.Menu.Menu(nombreDeUsuarioSeleccionado.getText(),ControlMenu.cargarPermisosDeUsuario(indiceSeleccion));
+                        new Presentacion.Interfaces.Menu.Menu(nombreDeUsuarioSeleccionado.getText(),ControlMenu.cargarPermisosDeUsuario(idUsuarioSeleccionado));
                 parent.getParent().add("menu",menu);
                 layout.show(parent.getParent(), "menu");
                 ((CardLayout)parent.getLayout()).show(parent, "loginUsuarios");

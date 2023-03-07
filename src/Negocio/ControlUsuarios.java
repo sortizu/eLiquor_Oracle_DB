@@ -20,7 +20,6 @@ public class ControlUsuarios {
             Usuario nuevoUsuario=new Usuario(u.getIdUsuario(),
             u.getNombre(),0,u.isGestionarVentas(),u.isGestionarUsuarios(),u.isGestionarProveedores(),u.isGestionarClientes(),u.isGestionarInventario(),u.isGenerarReportes());
             nuevoUsuario.setEstado(u.isEstado());
-            nuevoUsuario.setUltimoIngreso(u.getUltimoIngreso());
             nuevoUsuario.setFechaRegistro(u.getFechaRegistro());
             usuarios.add(nuevoUsuario);
         }
@@ -39,7 +38,6 @@ public class ControlUsuarios {
             usuario.isGestionarInventario(),
             usuario.isGenerarReportes(),
             usuario.isEstado(),
-            usuario.getUltimoIngreso(),
             usuario.getFechaRegistro()
         });
     }
@@ -63,7 +61,6 @@ public class ControlUsuarios {
             usuario.isGestionarInventario(),
             usuario.isGenerarReportes(),
             usuario.isEstado(),
-            usuario.getUltimoIngreso(),
             usuario.getIdUsuario()    
         };
         if(pinNuevo.contains("*")){

@@ -63,10 +63,6 @@ public class UsuarioDAO implements CRUD{
                 u.setGestionarInventario(rs.getBoolean(8));
                 u.setGenerarReportes(rs.getBoolean(9));
                 u.setEstado(rs.getBoolean(10));
-                Date fechaCargada = rs.getDate(11);
-                if(fechaCargada!=null){
-                    u.setUltimoIngreso(fechaCargada.toLocalDate());
-                }
                 u.setFechaRegistro(rs.getDate(12).toLocalDate());
                 lista.add(u);
             }
@@ -78,8 +74,9 @@ public class UsuarioDAO implements CRUD{
 
     public List listarUsuarioActivos(){
         List<Usuario> lista = new ArrayList<>();
-        String sql = "select * from usuarios where estadoEliminacion=0 and estado=1";
+        String sql = "SELECT * FROM VW_USUARIOS_ACTIVOS";
         try{
+            cn.setStaticRootConfiguration();
             con = cn.Conectar();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -87,19 +84,8 @@ public class UsuarioDAO implements CRUD{
                 Usuario u = new Usuario();
                 u.setIdUsuario(rs.getInt(1));
                 u.setNombre(rs.getString(2));
-                u.setPIN(rs.getInt(3));
-                u.setGestionarVentas(rs.getBoolean(4));
-                u.setGestionarUsuarios(rs.getBoolean(5));
-                u.setGestionarProveedores(rs.getBoolean(6));
-                u.setGestionarClientes(rs.getBoolean(7));
-                u.setGestionarInventario(rs.getBoolean(8));
-                u.setGenerarReportes(rs.getBoolean(9));
-                u.setEstado(rs.getBoolean(10));
-                Date fechaCargada = rs.getDate(11);
-                if(fechaCargada!=null){
-                    u.setUltimoIngreso(fechaCargada.toLocalDate());
-                }
-                u.setFechaRegistro(rs.getDate(12).toLocalDate());
+                u.setEstado(rs.getBoolean(3));
+                u.setFechaRegistro(rs.getDate(4).toLocalDate());
                 lista.add(u);
             }
         }catch(SQLException e){
@@ -107,6 +93,55 @@ public class UsuarioDAO implements CRUD{
          }
         return lista;
     }    
+    
+    public String obtenerNombreUsuario(int usuarioID){
+        String result = "";
+        String sql = "SELECT F_OBTENER_USUARIO("+usuarioID+") FROM DUAL";
+        try{
+            cn.setStaticRootConfiguration();
+            con = cn.Conectar();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            rs.next();
+            result=rs.getString(1);
+        }catch(SQLException e){
+             System.out.println(e.toString());
+         }
+        return result;
+    }
+    
+    public boolean [] cargarPermisosDeUsuario(int usuarioID){
+        boolean [] permisos = new boolean[7];
+        String sql = "SELECT \n" +
+        "  P.ACCESO_VENTAS,\n" +
+        "  P.ACCESO_USUARIOS,\n" +
+        "  P.ACCESO_PROVEEDORES,\n" +
+        "  P.ACCESO_CLIENTES,\n" +
+        "  P.ACCESO_INVENTARIO,\n" +
+        "  P.ACCESO_REPORTES,\n" +
+        "  P.ACCESO_CONFIGURACION\n" +
+        "  FROM ROOT.USUARIO U\n" +
+        "  LEFT JOIN ROOT.PERMISOS P\n" +
+        "  ON U.PERMISOS_ID = P.PERMISOS_ID\n" +
+        "  WHERE U.USUARIO_ID="+usuarioID;
+        try{
+            cn.setStaticRootConfiguration();
+            con = cn.Conectar();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            rs.next();
+            permisos[0]=rs.getBoolean(1);
+            permisos[1]=rs.getBoolean(2);
+            permisos[2]=rs.getBoolean(3);
+            permisos[3]=rs.getBoolean(4);
+            permisos[4]=rs.getBoolean(5);
+            permisos[5]=rs.getBoolean(6);
+            permisos[6]=rs.getBoolean(7);
+        }catch(SQLException e){
+             System.out.println(e.toString());
+         }
+        return permisos;
+    }
     
     @Override
     public void eliminar(int id) {

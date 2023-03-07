@@ -11,7 +11,7 @@ public class UtilidadSesion {
     public static int idUsuarioActual;
     public static String nombreUsuarioActual;
     public static Configuracion configuracionActual;
-    
+    /*
     static {
         Configuracion tempConf=ControlConfiguracion.cargarConfiguracion();
         if(tempConf==null){
@@ -29,5 +29,5 @@ public class UtilidadSesion {
         }else{
             configuracionActual=tempConf;
         }
-    }
+    }*/
 }

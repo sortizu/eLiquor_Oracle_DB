@@ -1,5 +1,6 @@
 package Datos.DAO;
 import java.sql.*;
+import oracle.jdbc.OracleDriver;
 /**
  *
  * @author sortizu
@@ -7,19 +8,28 @@ import java.sql.*;
 public class Conexion {
     //Atributos para generar conexión con la BD
     Connection con;
-    String url = "jdbc:mysql://localhost/spvl?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDateTimeCode=false&serverTimezone=UTC&useSSL=false";
-    String user = "root";
-    String pass = "1234";
+    String url = "jdbc:oracle:thin:@//localhost:1521/XE";
+    private static String user = "";
+    private static String pass = "";
     
     //Método para realizar la conexión con la BD
-    public Connection Conectar(){
+    public Connection Conectar() throws SQLException{
         try{
-            Class.forName("com.mysql.jdbc.Driver");
+            DriverManager.registerDriver(new OracleDriver());
             con = DriverManager.getConnection(url, user, pass);
-        } catch(Exception e){
-            System.out.println("Excepcion: "+e.getMessage());
+        } catch(SQLException e){
+            throw e;
         }
         return con;
+    }
+    
+    public void setStaticRootConfiguration(){
+        user="ROOT";
+        pass="ROOT@1234";
+    }
+    public void setStaticUserConfiguration(String newUser, String newPass){
+        user=newUser;
+        pass=newPass;
     }
 
 }
