@@ -155,7 +155,7 @@ public class PanelDeUsuarios extends JPanel implements PropertyChangeListener{
     private void iniciarComponentesCuerpoMedio(int width, int height){
         GridBagConstraints gbc = new GridBagConstraints();
         
-        tablaUsuarios=new TablaDefault(new String[]{"Nombre","Estado","Último Ingreso","Fecha de registro"}, new int[]{200,100,100,100}, panelModuloUsuarios);
+        tablaUsuarios=new TablaDefault(new String[]{"Nombre","Estado","Rol","Fecha de registro"}, new int[]{200,100,100,100}, panelModuloUsuarios);
         tablaUsuarios.getTabla().getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -236,6 +236,7 @@ public class PanelDeUsuarios extends JPanel implements PropertyChangeListener{
     }
 
     public void cargarListaDeUsuarios(){
+        tablaUsuarios.getModeloTabla().setRowCount(0);
         usuarios=ControlUsuarios.cargarListaDeUsuarios();
         for(Usuario p: usuarios){
             agregarUsuarioATabla(p);
@@ -247,7 +248,7 @@ public class PanelDeUsuarios extends JPanel implements PropertyChangeListener{
         {
             p.getNombre(),
             p.isEstado()?"Activo":"Inactivo",
-            "",
+            p.getRol(),
             p.getFechaRegistro().format(DateTimeFormatter.ofPattern("dd/MM/YYYY"))
         };
         tablaUsuarios.getModeloTabla().addRow(datos);

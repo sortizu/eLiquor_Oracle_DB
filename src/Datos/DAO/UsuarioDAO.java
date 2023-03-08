@@ -46,7 +46,7 @@ public class UsuarioDAO implements CRUD{
     @Override
     public List listar() {
         List<Usuario> lista = new ArrayList<>();
-        String sql = "select * from usuarios where estadoEliminacion=0";
+        String sql = "SELECT * FROM ROOT.VW_TOTAL_USUARIOS";
         try{
             con = cn.Conectar();
             ps = con.prepareStatement(sql);
@@ -54,16 +54,9 @@ public class UsuarioDAO implements CRUD{
             while(rs.next()){
                 Usuario u = new Usuario();
                 u.setIdUsuario(rs.getInt(1));
-                u.setNombre(rs.getString(2));
-                u.setPIN(rs.getInt(3));
-                u.setGestionarVentas(rs.getBoolean(4));
-                u.setGestionarUsuarios(rs.getBoolean(5));
-                u.setGestionarProveedores(rs.getBoolean(6));
-                u.setGestionarClientes(rs.getBoolean(7));
-                u.setGestionarInventario(rs.getBoolean(8));
-                u.setGenerarReportes(rs.getBoolean(9));
-                u.setEstado(rs.getBoolean(10));
-                u.setFechaRegistro(rs.getDate(12).toLocalDate());
+                u.setNombre(rs.getString(2));                   u.setFechaRegistro(rs.getDate(3).toLocalDate());
+                u.setEstado(rs.getBoolean(4));
+                u.setRol(rs.getInt(5)==101?"Administrador":"Empleado");
                 lista.add(u);
             }
         }catch(SQLException e){

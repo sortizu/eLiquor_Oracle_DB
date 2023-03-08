@@ -17,6 +17,7 @@ public class Usuario {
     private boolean gestionarInventario;
     private boolean generarReportes;
     private boolean accesoConfiguracion = false;
+    private String rol;
     private boolean estado;
     private LocalDate fechaRegistro;
     
@@ -133,5 +134,12 @@ public class Usuario {
     public void setAccesoConfiguracion(boolean accesoConfiguracion) {
         this.accesoConfiguracion = accesoConfiguracion;
     }
-    
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
 }

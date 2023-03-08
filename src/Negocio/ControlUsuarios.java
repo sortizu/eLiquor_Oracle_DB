@@ -15,15 +15,7 @@ import java.util.ArrayList;
 public class ControlUsuarios {
     public static ArrayList<Usuario> cargarListaDeUsuarios(){
         UsuarioDAO udao=new UsuarioDAO();
-        ArrayList<Usuario> usuarios=new ArrayList<Usuario>();
-        for(Usuario u: (ArrayList<Usuario>)udao.listar()){
-            Usuario nuevoUsuario=new Usuario(u.getIdUsuario(),
-            u.getNombre(),0,u.isGestionarVentas(),u.isGestionarUsuarios(),u.isGestionarProveedores(),u.isGestionarClientes(),u.isGestionarInventario(),u.isGenerarReportes());
-            nuevoUsuario.setEstado(u.isEstado());
-            nuevoUsuario.setFechaRegistro(u.getFechaRegistro());
-            usuarios.add(nuevoUsuario);
-        }
-        return usuarios;
+        return (ArrayList<Usuario>)udao.listar();
     }
     
     public static void agregarUsuario(Usuario usuario){

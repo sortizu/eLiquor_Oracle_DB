@@ -20,6 +20,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -36,30 +38,18 @@ import javax.swing.text.PlainDocument;
  *
  * @author sortizu
  */
-public class AgregarUsuarios extends VentanaEmergente{
-    
-    /*Selectores de permisos*/
-    SelectorNombresSINO selectorVentas = new SelectorNombresSINO("Ventas", Color.decode("#8C8C8C"),
-                UtilidadesFuentes.InterLight.deriveFont(25.0f),"SelectorVenta");
-        SelectorNombresSINO selectorInventario = new SelectorNombresSINO("Inventario", Color.decode("#8C8C8C"),
-                UtilidadesFuentes.InterLight.deriveFont(25.0f), "SelectorInventario");
-        SelectorNombresSINO selectorReportes = new SelectorNombresSINO("Reportes", Color.decode("#8C8C8C"),
-                UtilidadesFuentes.InterLight.deriveFont(25.0f), "SelectorReportes");
-        SelectorNombresSINO selectorClientes = new SelectorNombresSINO("Clientes", Color.decode("#8C8C8C"),
-                UtilidadesFuentes.InterLight.deriveFont(25.0f),"SelectorClientes");
-        SelectorNombresSINO selectorProveedores = new SelectorNombresSINO("Proveedores", Color.decode("#8C8C8C"),
-                UtilidadesFuentes.InterLight.deriveFont(25.0f), "SelectorProveedores");
-        SelectorNombresSINO selectorUsuarios = new SelectorNombresSINO("Usuarios", Color.decode("#8C8C8C"),
-                UtilidadesFuentes.InterLight.deriveFont(25.0f), "SelectorUsuarios");
+public class AgregarUsuarios extends VentanaEmergente implements PropertyChangeListener{
     
     private TextFieldRedondeado txtNombre;
     private JLabel lblAlertaNombre;
     private PasswordFieldRedondeado txtPIN;
     private JLabel lblAlertaPIN;
+    private Selector selectorRol;
     private PanelDeUsuarios panelPrincipalDeModuloUsuarios;
+    private int rolElegido = 0;
     
     public AgregarUsuarios(PanelDeUsuarios panelPrincipalDeModuloUsuarios) {
-        super("/Presentacion/Imagenes/Paneles/Usuarios/PanelAgregarUsuarios.png");
+        super("/Presentacion/Imagenes/Paneles/Proveedores/PanelAgregarProveedores.png");
         this.panelPrincipalDeModuloUsuarios=panelPrincipalDeModuloUsuarios;
         setTextoTitulo("AGREGAR USUARIO");
         setColorTitulo(Color.decode("#6ECD5F"));
@@ -72,15 +62,12 @@ public class AgregarUsuarios extends VentanaEmergente{
         lblNombre.setFont(UtilidadesFuentes.InterLight.deriveFont(25.0f));
         lblNombre.setForeground(Color.decode("#8C8C8C"));
         lblNombre.setHorizontalAlignment(JLabel.CENTER);
-        gbc.insets=new Insets(0, 0, 5, 0);
+        gbc.insets=new Insets(20, 0, 5, 0);
         gbc.anchor=GridBagConstraints.PAGE_END;
         gbc.gridx=0;
         gbc.gridy=0;
         gbc.fill=GridBagConstraints.NONE;
-        gbc.weightx=0;
-        gbc.weighty=1;
         cuerpo.add(lblNombre,gbc);
-        gbc.weighty=0;
         Dimension dimNombre = new Dimension(350,40);
         
         txtNombre=new TextFieldRedondeado(0);
@@ -137,59 +124,32 @@ public class AgregarUsuarios extends VentanaEmergente{
         lblAlertaPIN.setHorizontalAlignment(JLabel.CENTER);
         gbc.gridx=0;
         gbc.gridy=5;
-        gbc.weighty=1;
-        gbc.anchor=GridBagConstraints.PAGE_START;
+        //gbc.weighty=1;
         cuerpo.add(lblAlertaPIN,gbc);
         
-        JPanel SelectoresPermisos = new JPanel();
-        SelectoresPermisos.setOpaque(false);
-        SelectoresPermisos.setLayout(new GridBagLayout());
-        gbc.gridx=1;
-        gbc.gridy=0;
-        gbc.gridheight=6;
-        gbc.fill=GridBagConstraints.BOTH;
-        gbc.weightx=1;
-        gbc.weighty=1;
-        cuerpo.add(SelectoresPermisos,gbc);
-        
-        JLabel lblPermisos=new JLabel("Permisos");
+        JLabel lblPermisos=new JLabel("Rol");
         lblPermisos.setFont(UtilidadesFuentes.InterLight.deriveFont(25.0f));
         lblPermisos.setForeground(Color.decode("#8C8C8C"));
         lblPermisos.setHorizontalAlignment(JLabel.CENTER);
         gbc.gridx=0;
-        gbc.gridy=0;
-        gbc.gridheight=1;
-        gbc.gridwidth=4;
-        gbc.fill=GridBagConstraints.HORIZONTAL;
-        gbc.weightx=0;
-        gbc.weighty=0;
+        gbc.gridy=6;
         gbc.insets=new Insets(0, 0, 0, 0);
-        SelectoresPermisos.add(lblPermisos,gbc);
+        cuerpo.add(lblPermisos,gbc);
         
-        gbc.gridwidth=1;
-        gbc.gridy=1;
+        selectorRol=new Selector(new String[]{"Empleado","Administrador"},145,40);
+        selectorRol.setFuenteDeOpcion(UtilidadesFuentes.InterRegular.deriveFont(18.0f));
+        selectorRol.setColorDeFuente(Color.decode("#8C8C8C"));
+        selectorRol.solicitarSeleccion(0);
+        selectorRol.setNombreDeSelector("SROL");
+        selectorRol.addPropertyChangeListener(this);
+        gbc.anchor=GridBagConstraints.PAGE_START;
         gbc.gridx=0;
-        gbc.fill=GridBagConstraints.NONE;
-        gbc.weightx=0;
-        gbc.weighty=0;
-        gbc.insets=new Insets(0, 0, 0, 10);
-        SelectoresPermisos.add(selectorVentas,gbc);
-        gbc.gridy=1;
-        gbc.gridx=1;
-        SelectoresPermisos.add(selectorInventario,gbc);
-        gbc.gridy=2;
-        gbc.gridx=0;
-        SelectoresPermisos.add(selectorReportes,gbc);
-        gbc.gridy=2;
-        gbc.gridx=1;
-        SelectoresPermisos.add(selectorClientes,gbc);
-        gbc.gridy=3;
-        gbc.gridx=0;
-        SelectoresPermisos.add(selectorProveedores,gbc);
-        gbc.gridy=3;
-        gbc.gridx=1;
-        SelectoresPermisos.add(selectorUsuarios,gbc);
-        
+        gbc.gridy=7;
+        gbc.weighty=1;
+        //gbc.fill=GridBagConstraints.PAGE_START;
+        //gbc.weightx=1;
+        cuerpo.add(selectorRol,gbc);
+       
         
         PlainDocument documentNombre = (PlainDocument) txtNombre.getDocument();
         documentNombre.setDocumentFilter(new DocumentFilter() {
@@ -228,16 +188,14 @@ public class AgregarUsuarios extends VentanaEmergente{
             if(txtNombre.getText().isBlank()){
                 lblAlertaNombre.setForeground(new java.awt.Color(224, 130, 130));
             }else{
-                Usuario nuevoUsuario = new Usuario(ControlUsuarios.obtenerUltimoID()+1,txtNombre.getText(),
-                Integer.parseInt(new String(txtPIN.getPassword())),selectorVentas.getValorDeSelector(),
-                selectorUsuarios.getValorDeSelector(),selectorProveedores.getValorDeSelector(),
-                selectorClientes.getValorDeSelector(),selectorInventario.getValorDeSelector(),
-                selectorReportes.getValorDeSelector());
+                Usuario nuevoUsuario = new Usuario();
+                nuevoUsuario.setNombre(txtNombre.getText());
+                nuevoUsuario.setPIN(Integer.parseInt(new String(txtPIN.getPassword())));
                 nuevoUsuario.setFechaRegistro(LocalDate.now());
                 nuevoUsuario.setEstado(true);
-                panelPrincipalDeModuloUsuarios.usuarios.add(nuevoUsuario);
-                panelPrincipalDeModuloUsuarios.agregarUsuarioATabla(nuevoUsuario);
+                nuevoUsuario.setRol(rolElegido>0?"Administrador":"Empleado");
                 ControlUsuarios.agregarUsuario(nuevoUsuario);
+                panelPrincipalDeModuloUsuarios.cargarListaDeUsuarios();
                 ((FramePrincipal)((JFrame) SwingUtilities.getWindowAncestor(this))).cerrarPanelesEmergentes();
             }
         }else{
@@ -252,5 +210,13 @@ public class AgregarUsuarios extends VentanaEmergente{
     }
 
     
-    
+    public void propertyChange(PropertyChangeEvent evt) {
+        Selector selectorModificado=((Selector)evt.getSource());
+        String tipoSelector=selectorModificado.getNombreDeSelector();
+        switch (tipoSelector) {
+            case "SROL":
+                rolElegido = (int)evt.getNewValue();
+            break;
+        }
+    }
 }
