@@ -42,8 +42,8 @@ public class ModificarUsuarios extends VentanaEmergente implements PropertyChang
     private PanelDeUsuarios panelPrincipalDeModuloUsuarios;
     private int indice;
     private  Usuario usuarioSeleccionado;
-    private int estado;
-    private int rol;
+    private boolean estado;
+    private Usuario.ROL rol;
     
     
     public ModificarUsuarios(PanelDeUsuarios panelPrincipalDeModuloUsuarios, int indice) {
@@ -150,6 +150,7 @@ public class ModificarUsuarios extends VentanaEmergente implements PropertyChang
         selectorEstado.setFuenteDeOpcion(UtilidadesFuentes.InterRegular.deriveFont(20.0f));
         selectorEstado.setColorDeFuente(Color.decode("#8C8C8C"));
         selectorEstado.solicitarSeleccion(usuarioSeleccionado.isEstado()?0:1);
+        estado=usuarioSeleccionado.isEstado();
         selectorEstado.setNombreDeSelector("SEST");
         selectorEstado.addPropertyChangeListener(this);
         //gbc.insets=new Insets(0, 0, 0, 0);
@@ -170,6 +171,7 @@ public class ModificarUsuarios extends VentanaEmergente implements PropertyChang
         selectorRol.setFuenteDeOpcion(UtilidadesFuentes.InterRegular.deriveFont(19.0f));
         selectorRol.setColorDeFuente(Color.decode("#8C8C8C"));
         selectorRol.solicitarSeleccion(usuarioSeleccionado.getRol()==Usuario.ROL.ADMINISTRADOR?1:0);
+        rol=usuarioSeleccionado.getRol();
         selectorRol.setNombreDeSelector("SROL");
         selectorRol.addPropertyChangeListener(this);
         gbc.anchor=GridBagConstraints.PAGE_START;
@@ -217,10 +219,9 @@ public class ModificarUsuarios extends VentanaEmergente implements PropertyChang
             if(txtNombre.getText().isBlank()){
                 lblAlertaNombre.setForeground(new java.awt.Color(224, 130, 130));
             }else{
-                System.out.println(selectorEstado.getOpcionSeleccionada());
                 usuarioSeleccionado.setNombre(txtNombre.getText());
-                usuarioSeleccionado.setEstado(selectorEstado.getOpcionSeleccionada()==0);
-                usuarioSeleccionado.setRol(selectorEstado.getOpcionSeleccionada()==0?Usuario.ROL.EMPLEADO:Usuario.ROL.ADMINISTRADOR);
+                usuarioSeleccionado.setEstado(estado);
+                usuarioSeleccionado.setRol(rol);
                 panelPrincipalDeModuloUsuarios.modificarUsuarioDeTabla(indice, usuarioSeleccionado);
                 ControlUsuarios.modificarUsuario(indice,usuarioSeleccionado, new String(txtPIN.getPassword()));
                 ((FramePrincipal)((JFrame) SwingUtilities.getWindowAncestor(this))).cerrarPanelesEmergentes();
@@ -242,10 +243,10 @@ public class ModificarUsuarios extends VentanaEmergente implements PropertyChang
         String tipoSelector=selectorModificado.getNombreDeSelector();
         switch (tipoSelector) {
             case "SEST":
-                estado=((int)evt.getNewValue())==0?1:0;
+                estado=((int)evt.getNewValue())==0;
             break;
             case "SROL":
-                rol=((int)evt.getNewValue());
+                rol=((int)evt.getNewValue())==0?Usuario.ROL.EMPLEADO:Usuario.ROL.ADMINISTRADOR;
             break;
         }
     }

@@ -161,14 +161,17 @@ public class PanelDeUsuarios extends JPanel implements PropertyChangeListener{
         tablaUsuarios.getTabla().getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                int uniqueRowIndex = tablaUsuarios.getTabla().convertRowIndexToModel(tablaUsuarios.getTabla().getSelectedRow());
-                if(tablaUsuarios.getTabla().getSelectedRows().length>0
-                        && usuarios.get(uniqueRowIndex).getIdUsuario()!=UtilidadSesion.idUsuarioActual){
-                    botonesAccionUsuarios.activarBoton(0);
-                    botonesAccionUsuarios.activarBoton(1);
-                }else{
-                    botonesAccionUsuarios.desactivarBoton(0);
-                    botonesAccionUsuarios.desactivarBoton(1);
+                int selectedRow = tablaUsuarios.getTabla().getSelectedRow();
+                if (selectedRow>=0){
+                    int uniqueRowIndex = tablaUsuarios.getTabla().convertRowIndexToModel(selectedRow);
+                    if(tablaUsuarios.getTabla().getSelectedRows().length>0
+                            && usuarios.get(uniqueRowIndex).getIdUsuario()!=UtilidadSesion.idUsuarioActual){
+                        botonesAccionUsuarios.activarBoton(0);
+                        botonesAccionUsuarios.activarBoton(1);
+                    }else{
+                        botonesAccionUsuarios.desactivarBoton(0);
+                        botonesAccionUsuarios.desactivarBoton(1);
+                    }
                 }
             }
         });
@@ -261,6 +264,7 @@ public class PanelDeUsuarios extends JPanel implements PropertyChangeListener{
     public void modificarUsuarioDeTabla(int fila, Usuario p){
         tablaUsuarios.getModeloTabla().setValueAt(p.getNombre(),fila ,0);
         tablaUsuarios.getModeloTabla().setValueAt(p.isEstado()?"Activo":"Inactivo",fila ,1);
+        tablaUsuarios.getModeloTabla().setValueAt(p.getRol()==Usuario.ROL.ADMINISTRADOR?"Administrador":"Empleado",fila ,2);
     }
     
     public void eliminarUsuarioDeLaTabla(int indice){
