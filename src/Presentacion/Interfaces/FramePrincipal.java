@@ -77,15 +77,15 @@ public class FramePrincipal extends javax.swing.JFrame {
         //Cambiar a partir de aqui
         
         //Descomenta las tres lineas de abajo para entrar directamente al modulo de login
-        /*Login login = new Login();
+        Login login = new Login();
         ContenedorPaneles.add("login",login);
         layoutContenedorPaneles.show(ContenedorPaneles, "login");
-        */
+        
             
         //Descomenta las tres lineas de abajo para entrar directamente al modulo de usuarios
-        Usuarios usuarios = new Usuarios(ContenedorPaneles);
+        /*Usuarios usuarios = new Usuarios(ContenedorPaneles);
         ContenedorPaneles.add("usuarios",usuarios);
-        layoutContenedorPaneles.show(ContenedorPaneles, "usuarios");
+        layoutContenedorPaneles.show(ContenedorPaneles, "usuarios");*/
         
         
         //Descomenta las tres lineas de abajo para entrar directamente al modulo de inventario

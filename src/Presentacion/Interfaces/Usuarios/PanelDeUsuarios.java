@@ -4,6 +4,7 @@
  */
 package Presentacion.Interfaces.Usuarios;
 
+import Datos.DAO.Conexion;
 import Presentacion.Interfaces.Usuarios.*;
 import Presentacion.Interfaces.Usuarios.*;
 import Datos.Entidades.Usuario;
@@ -14,6 +15,7 @@ import Presentacion.Interfaces.FramePrincipal;
 import Presentacion.Interfaces.PanelModulo;
 import Presentacion.Interfaces.Selector;
 import Presentacion.Interfaces.TablaDefault;
+import Presentacion.Utilidades.UtilidadSesion;
 import Presentacion.Utilidades.UtilidadesFuentes;
 import java.awt.Color;
 import java.awt.Container;
@@ -159,7 +161,9 @@ public class PanelDeUsuarios extends JPanel implements PropertyChangeListener{
         tablaUsuarios.getTabla().getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if(tablaUsuarios.getTabla().getSelectedRows().length>0){
+                int uniqueRowIndex = tablaUsuarios.getTabla().convertRowIndexToModel(tablaUsuarios.getTabla().getSelectedRow());
+                if(tablaUsuarios.getTabla().getSelectedRows().length>0
+                        && usuarios.get(uniqueRowIndex).getIdUsuario()!=UtilidadSesion.idUsuarioActual){
                     botonesAccionUsuarios.activarBoton(0);
                     botonesAccionUsuarios.activarBoton(1);
                 }else{
@@ -246,9 +250,9 @@ public class PanelDeUsuarios extends JPanel implements PropertyChangeListener{
     public void agregarUsuarioATabla(Usuario p){
         Object[] datos=
         {
-            p.getNombre(),
+            p.getNombre()+(p.getIdUsuario()==UtilidadSesion.idUsuarioActual?" (Actual)":""),
             p.isEstado()?"Activo":"Inactivo",
-            p.getRol(),
+            p.getRol()==Usuario.ROL.ADMINISTRADOR?"Administrador":"Empleado",
             p.getFechaRegistro().format(DateTimeFormatter.ofPattern("dd/MM/YYYY"))
         };
         tablaUsuarios.getModeloTabla().addRow(datos);

@@ -7,9 +7,15 @@ import java.time.LocalDate;
  * @author sortizu
  */
 public class Usuario {
+    
+    public static enum ROL{
+        ADMINISTRADOR,
+        EMPLEADO
+    }
+    
     private int idUsuario;
     private String nombre;
-    private int PIN;
+    private String PIN;
     private boolean gestionarVentas;
     private boolean gestionarUsuarios;
     private boolean gestionarProveedores;
@@ -17,14 +23,14 @@ public class Usuario {
     private boolean gestionarInventario;
     private boolean generarReportes;
     private boolean accesoConfiguracion = false;
-    private String rol;
+    private ROL rol;
     private boolean estado;
     private LocalDate fechaRegistro;
     
     public Usuario() {
     }
 
-    public Usuario(int idUsuario, String nombre, int PIN, boolean gestionarVentas, boolean gestionarUsuarios, boolean gestionarProveedores, boolean gestionarClientes, boolean gestionarInventario, boolean generarReportes) {
+    public Usuario(int idUsuario, String nombre, String PIN, boolean gestionarVentas, boolean gestionarUsuarios, boolean gestionarProveedores, boolean gestionarClientes, boolean gestionarInventario, boolean generarReportes) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.PIN = PIN;
@@ -55,13 +61,15 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public int getPIN() {
+    public String getPIN() {
         return PIN;
     }
 
-    public void setPIN(int PIN) {
+    public void setPIN(String PIN) {
         this.PIN = PIN;
     }
+
+    
 
     public boolean isGestionarVentas() {
         return gestionarVentas;
@@ -135,11 +143,12 @@ public class Usuario {
         this.accesoConfiguracion = accesoConfiguracion;
     }
 
-    public String getRol() {
+    public ROL getRol() {
         return rol;
     }
 
-    public void setRol(String rol) {
+    public void setRol(ROL rol) {
         this.rol = rol;
     }
+    
 }

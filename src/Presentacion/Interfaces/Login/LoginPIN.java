@@ -423,7 +423,7 @@ public class LoginPIN extends javax.swing.JPanel {
     private void verificarPassword(){
         try{
             boolean [] permisos = ControlMenu.cargarPermisosDeUsuario(idUsuarioSeleccionado);
-            int ps = Integer.parseInt(String.valueOf(txtpassword.getPassword()).trim());
+            String ps = String.valueOf(txtpassword.getPassword()).trim();
             if(ControlLogin.verificarPassword(idUsuarioSeleccionado, ps)){
                 UtilidadSesion.idUsuarioActual=idUsuarioSeleccionado;
                 UtilidadSesion.nombreUsuarioActual=nombreDeUsuarioSeleccionado.getText();

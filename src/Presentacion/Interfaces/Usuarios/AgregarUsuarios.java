@@ -84,7 +84,7 @@ public class AgregarUsuarios extends VentanaEmergente implements PropertyChangeL
         gbc.gridy=1;
         cuerpo.add(txtNombre,gbc);
         
-        lblAlertaNombre = new JLabel("Asegúrese de poner una razón social");
+        lblAlertaNombre = new JLabel("Asegúrese de poner un nombre de usuario");
         lblAlertaNombre.setFont(UtilidadesFuentes.InterRegular.deriveFont(17.0f));
         lblAlertaNombre.setForeground(Color.white);
         lblAlertaNombre.setHorizontalAlignment(JLabel.CENTER);
@@ -133,7 +133,7 @@ public class AgregarUsuarios extends VentanaEmergente implements PropertyChangeL
         lblPermisos.setHorizontalAlignment(JLabel.CENTER);
         gbc.gridx=0;
         gbc.gridy=6;
-        gbc.insets=new Insets(0, 0, 0, 0);
+        //gbc.insets=new Insets(0, 0, 0, 0);
         cuerpo.add(lblPermisos,gbc);
         
         selectorRol=new Selector(new String[]{"Empleado","Administrador"},145,40);
@@ -190,10 +190,9 @@ public class AgregarUsuarios extends VentanaEmergente implements PropertyChangeL
             }else{
                 Usuario nuevoUsuario = new Usuario();
                 nuevoUsuario.setNombre(txtNombre.getText());
-                nuevoUsuario.setPIN(Integer.parseInt(new String(txtPIN.getPassword())));
-                nuevoUsuario.setFechaRegistro(LocalDate.now());
+                nuevoUsuario.setPIN(new String(txtPIN.getPassword()));
                 nuevoUsuario.setEstado(true);
-                nuevoUsuario.setRol(rolElegido>0?"Administrador":"Empleado");
+                nuevoUsuario.setRol(rolElegido>0?Usuario.ROL.ADMINISTRADOR:Usuario.ROL.EMPLEADO);
                 ControlUsuarios.agregarUsuario(nuevoUsuario);
                 panelPrincipalDeModuloUsuarios.cargarListaDeUsuarios();
                 ((FramePrincipal)((JFrame) SwingUtilities.getWindowAncestor(this))).cerrarPanelesEmergentes();
@@ -210,6 +209,7 @@ public class AgregarUsuarios extends VentanaEmergente implements PropertyChangeL
     }
 
     
+    @Override
     public void propertyChange(PropertyChangeEvent evt) {
         Selector selectorModificado=((Selector)evt.getSource());
         String tipoSelector=selectorModificado.getNombreDeSelector();

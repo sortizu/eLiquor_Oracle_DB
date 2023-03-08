@@ -25,14 +25,15 @@ public class ControlLogin {
     solo un usuario a la vez, sin tener que recorrer a todos los usuarios tal
     como se hacer ahora.
     */
-    public static boolean verificarPassword(int usuarioID, int ps){
+    public static boolean verificarPassword(int usuarioID, String ps){
         UsuarioDAO udao = new UsuarioDAO();
         String nombreUsuario = udao.obtenerNombreUsuario(usuarioID);
+        Conexion cn=new Conexion();
         try {
-            Conexion cn=new Conexion();
-            cn.setStaticUserConfiguration(nombreUsuario, Integer.toString(ps));
+            cn.setStaticUserConfiguration(nombreUsuario, ps);
             cn.Conectar();
         } catch (Exception e) {
+            cn.setStaticRootConfiguration();
             return false;
         }
         return true;

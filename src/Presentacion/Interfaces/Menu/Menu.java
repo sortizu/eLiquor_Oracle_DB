@@ -336,7 +336,7 @@ public class Menu extends javax.swing.JPanel {
         lvlversion.setFont(UtilidadesFuentes.InterRegular.deriveFont(15.0f));
         lvlversion.setForeground(new java.awt.Color(140, 140, 140));
         lvlversion.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lvlversion.setText("V 1.0");
+        lvlversion.setText("V 2.0");
         lvlversion.setPreferredSize(new java.awt.Dimension(425, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;

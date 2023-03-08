@@ -23,14 +23,7 @@ public class ControlUsuarios {
         udao.add(new Object[]{
             usuario.getNombre(),
             usuario.getPIN(),
-            usuario.isGestionarVentas(),
-            usuario.isGestionarUsuarios(),
-            usuario.isGestionarProveedores(),
-            usuario.isGestionarClientes(),
-            usuario.isGestionarInventario(),
-            usuario.isGenerarReportes(),
-            usuario.isEstado(),
-            usuario.getFechaRegistro()
+            usuario.getRol()==Usuario.ROL.ADMINISTRADOR?1:0
         });
     }
     
@@ -44,34 +37,14 @@ public class ControlUsuarios {
     public static void modificarUsuario(int indiceLista, Usuario usuario, String pinNuevo){
         UsuarioDAO udao=new UsuarioDAO();
         Object[] datos=
-        {usuario.getNombre(),
+        {
+            usuario.getIdUsuario(),
+            usuario.getNombre(),
             pinNuevo,
-            usuario.isGestionarVentas(),
-            usuario.isGestionarUsuarios(),
-            usuario.isGestionarProveedores(),
-            usuario.isGestionarClientes(),
-            usuario.isGestionarInventario(),
-            usuario.isGenerarReportes(),
-            usuario.isEstado(),
-            usuario.getIdUsuario()    
+            usuario.isEstado()?1:0,
+            usuario.getRol()==Usuario.ROL.ADMINISTRADOR?1:0
         };
-        if(pinNuevo.contains("*")){
-            String pinViejo = Integer.toString(((Usuario)udao.listar().get(indiceLista)).getPIN());
-            String pin="";
-            for(int i=0;i<pinViejo.length();i++){
-                if(pinNuevo.charAt(i)=='*'){
-                    pin+=pinViejo.charAt(i);
-                }else{
-                    pin+=pinNuevo.charAt(i);
-                }
-            }
-            datos[1]=Integer.parseInt(pin);
-        }
         udao.actualizar(datos);
     }
     
-    public static int obtenerUltimoID(){
-        UsuarioDAO udao=new UsuarioDAO();
-        return udao.setLastId();
-    }
 }

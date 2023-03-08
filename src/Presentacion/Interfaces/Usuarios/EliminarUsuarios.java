@@ -6,6 +6,7 @@ import Negocio.ControlUsuarios;
 import Presentacion.Interfaces.FramePrincipal;
 import Presentacion.Interfaces.ScrollBarCustom;
 import Presentacion.Interfaces.VentanaEmergente;
+import Presentacion.Utilidades.UtilidadSesion;
 import Presentacion.Utilidades.UtilidadesFuentes;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -111,10 +112,12 @@ public class EliminarUsuarios extends VentanaEmergente{
         gbc.weightx=0;
         gbc.weighty=1.0;
         cuerpo.add(scrollPaneDeListaDeUsuarios,gbc);
-        
         for(int fila: filasSeleccionadas){
                 try {
                     Usuario UsuarioABorrar = panelPrincipalDeModuloDeUsuarios.usuarios.get(fila);
+                    if (UsuarioABorrar.getIdUsuario()==UtilidadSesion.idUsuarioActual){
+                    continue;
+                    }
                     UsuariosABorrar.add(UsuarioABorrar);
                     modeloListaDeUsuariosAEliminar.addRow(new Object[]{UsuarioABorrar.getNombre()});
                 } catch (Exception e) {}
@@ -126,6 +129,10 @@ public class EliminarUsuarios extends VentanaEmergente{
     public void btnAceptarPresionado(MouseEvent evt) {
         panelPrincipalDeModuloDeUsuarios.usuarios.removeAll(UsuariosABorrar);
         for (int i = filasSeleccionadas.length-1;i>=0;i--) {
+            Usuario UsuarioABorrar = panelPrincipalDeModuloDeUsuarios.usuarios.get(i);
+            if (UsuarioABorrar.getIdUsuario()==UtilidadSesion.idUsuarioActual){
+                    continue;
+                    }
             panelPrincipalDeModuloDeUsuarios.eliminarUsuarioDeLaTabla(filasSeleccionadas[i]);
         }
         

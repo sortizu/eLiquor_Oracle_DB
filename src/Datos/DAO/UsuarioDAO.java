@@ -16,25 +16,16 @@ public class UsuarioDAO implements CRUD{
     @Override
     public int add(Object[] o) {
         int r = 0;
-        int id=setLastId()+1;
         String sql = 
-            "insert into usuarios(nombre, PIN, gestionarVentas, gestionarUsuarios, gestionarProveedores, gestionarClientes, gestionarInventario, generarReportes,estado,ultimoIngreso,fechaRegistro,estadoEliminacion,idUsuario)values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            "BEGIN "
+            + "ROOT.SP_AGREGAR_USUARIO(?,?,?);"
+            + "END;";
         try{
             con = cn.Conectar();
             ps = con.prepareStatement(sql);
             ps.setObject(1, o[0]);
             ps.setObject(2, o[1]);
             ps.setObject(3, o[2]);
-            ps.setObject(4, o[3]);
-            ps.setObject(5, o[4]);
-            ps.setObject(6, o[5]);
-            ps.setObject(7, o[6]);
-            ps.setObject(8, o[7]);
-            ps.setObject(9, o[8]);
-            ps.setObject(10, o[9]);
-            ps.setObject(11, o[10]);
-            ps.setObject(12, 0);
-            ps.setObject(13, id);
             r = ps.executeUpdate();
         }catch(SQLException e){
              System.out.println(e.toString());
@@ -56,7 +47,7 @@ public class UsuarioDAO implements CRUD{
                 u.setIdUsuario(rs.getInt(1));
                 u.setNombre(rs.getString(2));                   u.setFechaRegistro(rs.getDate(3).toLocalDate());
                 u.setEstado(rs.getBoolean(4));
-                u.setRol(rs.getInt(5)==101?"Administrador":"Empleado");
+                u.setRol(rs.getInt(5)==101?Usuario.ROL.ADMINISTRADOR:Usuario.ROL.EMPLEADO);
                 lista.add(u);
             }
         }catch(SQLException e){
@@ -67,7 +58,7 @@ public class UsuarioDAO implements CRUD{
 
     public List listarUsuarioActivos(){
         List<Usuario> lista = new ArrayList<>();
-        String sql = "SELECT * FROM VW_USUARIOS_ACTIVOS";
+        String sql = "SELECT * FROM ROOT.VW_USUARIOS_ACTIVOS";
         try{
             con = cn.Conectar();
             ps = con.prepareStatement(sql);
@@ -88,7 +79,7 @@ public class UsuarioDAO implements CRUD{
     
     public String obtenerNombreUsuario(int usuarioID){
         String result = "";
-        String sql = "SELECT F_OBTENER_USUARIO("+usuarioID+") FROM DUAL";
+        String sql = "SELECT ROOT.F_OBTENER_USUARIO("+usuarioID+") FROM DUAL";
         try{
             con = cn.Conectar();
             ps = con.prepareStatement(sql);
@@ -148,12 +139,13 @@ public class UsuarioDAO implements CRUD{
     }
     
     public void eliminacionLogica(int id){
-        String sql = "update usuarios set estadoEliminacion=? where IdUsuario=?";
+        String sql = "BEGIN "
+                    + "ROOT.SP_ELIMINAR_USUARIO(?);"
+                    + "END;";
         try{
            con = cn.Conectar();
            ps = con.prepareStatement(sql);
-           ps.setInt(1, 1);
-           ps.setInt(2, id);
+           ps.setInt(1, id);
            ps.executeUpdate();
        }catch(SQLException e){
             System.out.println(e.toString());
@@ -163,8 +155,9 @@ public class UsuarioDAO implements CRUD{
     @Override
     public int actualizar(Object[] o) {
         int r = 0;
-        String sql = "update usuarios set nombre=?,PIN=?,gestionarVentas=?,gestionarUsuarios=?,"
-                + " gestionarProveedores=?, gestionarClientes=?,gestionarInventario=?,generarReportes=?, estado=?, ultimoIngreso=?  where IdUsuario=?";
+        String sql = "BEGIN "
+                    + "ROOT.SP_MODIFICAR_USUARIO(?,?,?,?,?);"
+                    + "END;";
         try{
            con = cn.Conectar();
            ps = con.prepareStatement(sql);
@@ -173,38 +166,11 @@ public class UsuarioDAO implements CRUD{
            ps.setObject(3, o[2]);
            ps.setObject(4, o[3]);
            ps.setObject(5, o[4]);
-           ps.setObject(6, o[5]);
-           ps.setObject(7, o[6]);
-           ps.setObject(8, o[7]);
-           ps.setObject(9, o[8]);
-           ps.setObject(10, o[9]);
-           ps.setObject(11, o[10]);
            r = ps.executeUpdate();
        }catch(SQLException e){
             System.out.println(e.toString());
         }
        return r;
     }
-    
-    public int setLastId(){
-        int id=1;
-       String sql = "SELECT MAX(idUsuario) from usuarios;";
-       try{
-           con = cn.Conectar();
-           ps = con.prepareStatement(sql);
-           rs = ps.executeQuery();
-           
-           rs.beforeFirst();
-           rs.next();
-           
-           id = rs.getInt(1);
-           
-       }catch(SQLException e){
-            System.out.println(e.toString());
-        }
-       return id;
-    }
-    
-    
     
 }
