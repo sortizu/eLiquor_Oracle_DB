@@ -1,6 +1,7 @@
 
 package Datos.DAO;
 
+import Datos.Entidades.DetalleVenta;
 import Datos.Entidades.Venta;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +9,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import oracle.jdbc.driver.OracleCallableStatement;
+import oracle.jdbc.driver.OraclePreparedStatement;
+import oracle.sql.ARRAY;
+import oracle.sql.ArrayDescriptor;
+import oracle.sql.STRUCT;
+import oracle.sql.StructDescriptor;
 
 /**
  *
@@ -21,29 +28,48 @@ public class VentaDAO implements CRUD {
     
     @Override
     public int add(Object[] o) {
+        return 0;
+    }
+    
+    public void registrarVenta(Venta venta){
         int r = 0;
-        int id=setLastId()+1;
         String sql = 
-            "insert into venta(fechaRegistro, ventaBruta, totalImpuestos, totalDescuentos, totalCosto,pagoCliente,cambio,idCliente,idUsuario,idVenta) values(?,?,?,?,?,?,?,?,?,?)";
+            "BEGIN "
+            +"ROOT.SP_REGISTRO_VENTA(?,?,?,?,?,?);"
+            +"END;";
         try{
             con = cn.Conectar();
-            ps = con.prepareStatement(sql);
+            StructDescriptor itemDescriptor =
+                StructDescriptor.createDescriptor("ROOT.TYPE_VENTA_PRODUCTO",con);
+            //Array de objetos que describe los atributos del tipo TYPE_VENTA_PRODUCTO
+            STRUCT [] VentaProductoArray = new STRUCT[venta.getDetallesVenta().size()];
+            for(int i = 0;i<venta.getDetallesVenta().size();i++){
+                Object[] itemAtributes = new Object[]{
+                new Integer(venta.getDetallesVenta().get(i).getProducto().getIdProducto()),
+                new Integer(venta.getDetallesVenta().get(i).getCantidad())
+            };
+                STRUCT itemObject = new STRUCT(itemDescriptor, con, itemAtributes);
+                VentaProductoArray[i]=itemObject;
+            }
+            //Preparando estructura para enviar array a procedimniento
+            ArrayDescriptor descriptor =
+                    ArrayDescriptor.createDescriptor("ROOT.TYPE_TABLE_VENTA_PRODUCTO",con);
+            ARRAY arrayDeVentaProducto = 
+                    new ARRAY(descriptor, con, VentaProductoArray);
+            OraclePreparedStatement ps = 
+                    (OraclePreparedStatement)con.prepareStatement(sql);
             
-            ps.setObject(1, o[0]);
-            ps.setObject(2, o[1]);
-            ps.setObject(3, o[2]);
-            ps.setObject(4, o[3]);
-            ps.setObject(5, o[4]);
-            ps.setObject(6, o[5]);
-            ps.setObject(7, o[6]);
-            ps.setObject(8, o[7]);
-            ps.setObject(9, o[8]);
-            ps.setObject(10, id);
-            r=ps.executeUpdate();
+            ps.setDouble(1, venta.getTotalImpuestos());
+            ps.setDouble(2, venta.getTotalDescuento());
+            ps.setDouble(3, venta.getPagoCliente());
+            ps.setObject(4, venta.getIdCliente()<0?null:venta.getIdCliente());
+            ps.setDouble(5, venta.getIdUsuario());
+            ps.setARRAY(6, arrayDeVentaProducto);
+            ps.execute();
+
         }catch(SQLException e){
              System.out.println(e.toString());
          }
-        return r; 
     }
 
     @Override
@@ -85,22 +111,4 @@ public class VentaDAO implements CRUD {
         return lista;
     }
     
-    public int setLastId(){
-        int id=1;
-       String sql = "SELECT MAX(idVenta) from venta;";
-       try{
-           con = cn.Conectar();
-           ps = con.prepareStatement(sql);
-           rs = ps.executeQuery();
-           
-           rs.beforeFirst();
-           rs.next();
-           
-           id = rs.getInt(1);
-           
-       }catch(SQLException e){
-            System.out.println(e.toString());
-        }
-       return id;
-    }
 }

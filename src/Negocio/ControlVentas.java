@@ -1,12 +1,7 @@
 package Negocio;
 
-import Datos.DAO.ProductoDAO;
 import Datos.DAO.VentaDAO;
-import Datos.DAO.VentaProductoDAO;
-import Datos.Entidades.DetalleVenta;
-import Datos.Entidades.Producto;
 import Datos.Entidades.Venta;
-import java.util.ArrayList;
 
 /**
  *
@@ -16,26 +11,18 @@ public class ControlVentas {
     public static void registrarVenta(Venta venta){
         
         VentaDAO ventaE = new VentaDAO ();
-        int idVenta = ventaE.setLastId()+1;
         //fechaRegistro, ventaBruta, totalImpuestos, totalDescuentos, 
         //totalCosto,pagoCliente,cambio,idCliente,idUsuario,idVenta
-        Object[]campos;
+        /*Object[]campos;
         int idCliente=venta.getIdCliente();
-        if(idCliente<0){
-            campos = new Object[]{venta.getFechaRegistro(),venta.getVentaBruta()
-        ,venta.getTotalImpuestos(),venta.getTotalDescuento(), venta.getTotalCosto()
-        ,venta.getPagoCliente(),venta.getCambio(), null
-        ,venta.getIdUsuario(), venta.getIdVenta()};
-        ventaE.add(campos);
-        }
-        else{
-            campos = new Object[]{venta.getFechaRegistro(),venta.getVentaBruta()
-        ,venta.getTotalImpuestos(),venta.getTotalDescuento(), venta.getTotalCosto()
-        ,venta.getPagoCliente(),venta.getCambio(), venta.getIdCliente()
-        ,venta.getIdUsuario(), venta.getIdVenta()};
-        ventaE.add(campos);
-        }
-        
+        campos = new Object[]{
+            venta.getTotalImpuestos(),
+            venta.getTotalDescuento(),
+            venta.getPagoCliente(),
+            idCliente<0?null:idCliente
+            ,venta.getIdUsuario()};*/
+        ventaE.registrarVenta(venta);
+        /*
         ProductoDAO pDao = new ProductoDAO ();
         
         
@@ -55,7 +42,7 @@ public class ControlVentas {
             
             pDao.actualizar(datosProducto);
         }
-        
+        */
         
         
         

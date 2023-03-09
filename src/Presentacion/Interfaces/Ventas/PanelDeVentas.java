@@ -1153,11 +1153,13 @@ public class PanelDeVentas extends JPanel implements PropertyChangeListener{
     
     
     public void cargarListaDeDepartamentos(){
+        TablaListaDeItems.getModeloTabla().setRowCount(0);
         departamentos=ControlInventario.cargarDepartamentos();
         mostrarListaDepartamentosCargadaEnTabla();
     }
     
     public void cargarListaDeProductos(int idDepartamento){
+        TablaListaDeItems.getModeloTabla().setRowCount(0);
         productos=ControlInventario.cargarProductosCaja(idDepartamento);
         mostrarListaProductosCargadaEnTabla();
     }

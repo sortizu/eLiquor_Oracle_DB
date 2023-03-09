@@ -2,9 +2,7 @@ package Presentacion.Interfaces.Ventas;
 
 import Datos.Entidades.Cliente;
 import Datos.Entidades.Entrega;
-import Datos.Entidades.Proveedor;
 import Negocio.ControlClientes;
-import Negocio.ControlVentas;
 import Presentacion.Interfaces.Buscador;
 import Presentacion.Interfaces.FramePrincipal;
 import Presentacion.Interfaces.ScrollBarCustom;
@@ -17,7 +15,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseEvent;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;

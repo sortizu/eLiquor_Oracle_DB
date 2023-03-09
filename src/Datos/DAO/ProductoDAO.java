@@ -81,6 +81,38 @@ public class ProductoDAO implements CRUD{
         return lista;
     }
     
+    public List listarProductosDeDepartamentoEnCaja(int departamentoID){
+        List<Producto> lista = new ArrayList<Producto>();
+        String sql = "SELECT * FROM ROOT.VW_PRODUCTOS_EN_DEP_CAJA";
+        try{
+            con = cn.Conectar();
+            ps = con.prepareStatement(
+            "BEGIN ROOT.ROOT_INVENTARIO.V_DEPARTAMENTO_ID_BUSQUEDA:=?; END;"
+            );
+            ps.setObject(1, departamentoID<0?null:departamentoID);
+            ps.executeUpdate();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                Producto p = new Producto();
+                p.setIdProducto(rs.getInt(1));
+                p.setNombre(rs.getString(2));
+                p.setPrecio(rs.getDouble(3));
+                p.setCosto(rs.getDouble(4));
+                p.setStock(rs.getInt(5));
+                p.setPrecioVariable(rs.getBoolean(6));
+                p.setActivarDescuentos(rs.getBoolean(7));
+                p.setMostrarEnCaja(rs.getBoolean(8));
+                p.setFechaRegistro(rs.getDate(9).toLocalDate());
+
+                lista.add(p);
+            }
+        }catch(SQLException e){
+             System.out.println(e.toString());
+         }
+        return lista;
+    }
+    
     public Producto obtenerProductoPorSuID(int idProducto) {
         Producto p  = new Producto();
         String sql = "select nombre, precio, costo, stock, precioVariable, "+

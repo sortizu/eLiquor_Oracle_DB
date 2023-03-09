@@ -1,6 +1,5 @@
 package Presentacion.Interfaces.Ventas;
 
-import Datos.Entidades.Usuario;
 import Datos.Entidades.Venta;
 import Negocio.ControlVentas;
 import Presentacion.Interfaces.FramePrincipal;
