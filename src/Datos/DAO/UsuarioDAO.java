@@ -1,6 +1,7 @@
 package Datos.DAO;
 
 import Datos.Entidades.Usuario;
+import Presentacion.Interfaces.FramePrincipal;
 import java.util.List;
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,8 +10,8 @@ import java.util.ArrayList;
  * @author sortizu
  */
 public class UsuarioDAO implements CRUD{
-    Conexion cn=new Conexion();
-    Connection con;
+    Conexion cn=FramePrincipal.conexion;
+    Connection con=cn.con;
     PreparedStatement ps;
     ResultSet rs;
     @Override
@@ -21,7 +22,7 @@ public class UsuarioDAO implements CRUD{
             + "ROOT.SP_AGREGAR_USUARIO(?,?,?);"
             + "END;";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             ps.setObject(1, o[0]);
             ps.setObject(2, o[1]);
@@ -39,7 +40,7 @@ public class UsuarioDAO implements CRUD{
         List<Usuario> lista = new ArrayList<>();
         String sql = "SELECT * FROM ROOT.VW_TOTAL_USUARIOS";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()){
@@ -60,7 +61,7 @@ public class UsuarioDAO implements CRUD{
         List<Usuario> lista = new ArrayList<>();
         String sql = "SELECT * FROM ROOT.VW_USUARIOS_ACTIVOS";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()){
@@ -81,7 +82,7 @@ public class UsuarioDAO implements CRUD{
         String result = "";
         String sql = "SELECT ROOT.F_OBTENER_USUARIO("+usuarioID+") FROM DUAL";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             rs.next();
@@ -108,7 +109,7 @@ public class UsuarioDAO implements CRUD{
         "  WHERE U.USUARIO_ID="+usuarioID;
         try{
             cn.setStaticRootConfiguration();
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             rs.next();
@@ -129,7 +130,7 @@ public class UsuarioDAO implements CRUD{
     public void eliminar(int id) {
         String sql = "delete from usuarios where idUsuario=?";
         try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            ps.setInt(1,id);
            ps.executeUpdate();
@@ -143,7 +144,7 @@ public class UsuarioDAO implements CRUD{
                     + "ROOT.SP_ELIMINAR_USUARIO(?);"
                     + "END;";
         try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            ps.setInt(1, id);
            ps.executeUpdate();
@@ -159,7 +160,7 @@ public class UsuarioDAO implements CRUD{
                     + "ROOT.SP_MODIFICAR_USUARIO(?,?,?,?,?);"
                     + "END;";
         try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            ps.setObject(1, o[0]);
            ps.setObject(2, o[1]);

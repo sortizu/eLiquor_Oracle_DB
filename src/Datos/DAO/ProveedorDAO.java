@@ -1,6 +1,7 @@
 package Datos.DAO;
 
 import Datos.Entidades.Proveedor;
+import Presentacion.Interfaces.FramePrincipal;
 import java.util.List;
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,8 +10,8 @@ import java.util.ArrayList;
  * @author 
  */
 public class ProveedorDAO implements CRUD{
-    Conexion cn=new Conexion();
-    Connection con;
+    Conexion cn=FramePrincipal.conexion;
+    Connection con=cn.con;
     PreparedStatement ps;
     ResultSet rs;
     @Override
@@ -21,7 +22,7 @@ public class ProveedorDAO implements CRUD{
             +"ROOT.SP_AGREGAR_PROVEEDOR(?,?,?);"
             +"END;";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             ps.setObject(1, o[0]);
             ps.setObject(2, o[1]);
@@ -39,7 +40,7 @@ public class ProveedorDAO implements CRUD{
         List<Proveedor> lista = new ArrayList<>();
         String sql = "select * from ROOT.VW_TOTAL_PROVEEDORES";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()){
@@ -61,7 +62,7 @@ public class ProveedorDAO implements CRUD{
     public void eliminar(int id) {
         String sql = "delete from proveedor where idProveedor=?";
         try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            ps.setInt(1,id);
            ps.executeUpdate();
@@ -76,7 +77,7 @@ public class ProveedorDAO implements CRUD{
             +"ROOT.SP_ELIMINAR_PROVEEDOR(?);"
             +"END;";
         try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            ps.setInt(1, id);
            ps.executeUpdate();
@@ -93,7 +94,7 @@ public class ProveedorDAO implements CRUD{
             +"ROOT.SP_MODIFICAR_PROVEEDOR(?,?,?,?);"
             +"END;";
         try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            ps.setObject(1, o[0]);
            ps.setObject(2, o[1]);

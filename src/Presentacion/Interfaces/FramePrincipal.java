@@ -40,8 +40,15 @@ public class FramePrincipal extends javax.swing.JFrame {
     CardLayout layoutContenedorPaneles;
     public static boolean overlayConsole=false;
     public static String overlayConsoleText = "";
+    public static Conexion conexion=new Conexion();
     
     public FramePrincipal() {
+        //Creando conexion por defecto de la BD
+        conexion.setStaticRootConfiguration();
+        try {
+            conexion.Conectar();
+        } catch (Exception e) {
+        }
         initComponents();
         setLocationRelativeTo(null);
         ContenedorPaneles.setOpaque(false);
@@ -69,6 +76,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         overlay.setBackground(new Color(129,129,129,114));
         overlay.addMouseListener( new MouseAdapter() { } );
         setGlassPane(overlay);
+        
         //-------------------------------------------------------------------------------------------------------------------------
         //Considerar este codigo como el modo "Debug"
         //Instancia el contenedor de modulo que desees probar y este aparecera 

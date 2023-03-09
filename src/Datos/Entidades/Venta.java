@@ -15,11 +15,11 @@ public class Venta {
     private LocalDate fechaRegistro;
     private double pagoCliente;
     private double cambio;
-    private double ventaBruta=-1;
-    private double totalCosto=-1;
-    private double totalImpuestos=-1;
-    private int totalCantidad=-1;
-    private double totalDescuento=-1;
+    private double ventaBruta=0;
+    private double totalCosto=0;
+    private double totalImpuestos=0;
+    private int totalCantidad=0;
+    private double totalDescuento=0;
     
 
     public Venta() {

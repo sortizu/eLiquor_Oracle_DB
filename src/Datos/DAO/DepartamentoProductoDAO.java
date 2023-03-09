@@ -5,6 +5,7 @@
 package Datos.DAO;
 
 import Datos.Entidades.DepartamentoProducto;
+import Presentacion.Interfaces.FramePrincipal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,8 +20,8 @@ import java.util.List;
  */
 public class DepartamentoProductoDAO implements CRUD{
     
-    Conexion cn=new Conexion();
-    Connection con;
+    Conexion cn=FramePrincipal.conexion;
+    Connection con=cn.con;
     PreparedStatement ps;
     ResultSet rs;
 
@@ -33,7 +34,7 @@ public class DepartamentoProductoDAO implements CRUD{
         String sql = 
             "insert into departamentoproducto(idDepartamento, idProducto, idDepartamentoProducto) values(?,?,?)";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             ps.setObject(1, o[0]);
             ps.setObject(2, o[1]);
@@ -51,7 +52,7 @@ public class DepartamentoProductoDAO implements CRUD{
         List<DepartamentoProducto> lista = new ArrayList<DepartamentoProducto>();
         String sql = "select * from departamentoproducto";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()){
@@ -74,7 +75,7 @@ public class DepartamentoProductoDAO implements CRUD{
         List<Integer> lista = new ArrayList<Integer>();
         String sql = "select idProducto from departamentoproducto where idDepartamento=?";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             ps.setObject(1, idDepartamento);
             
@@ -94,7 +95,7 @@ public class DepartamentoProductoDAO implements CRUD{
     public void eliminar(int id) {
         String sql = "delete from departamentoproducto where idDepartamentoProducto=?";
         try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            ps.setInt(1,id);
            ps.executeUpdate();
@@ -109,7 +110,7 @@ public class DepartamentoProductoDAO implements CRUD{
         String sql = "update departamentoproducto set idDepartamento=?, idProducto=? "
                 +"where idDepartamentoProducto=?";
         try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            ps.setObject(1, o[0]);
            ps.setObject(2, o[1]);
@@ -126,7 +127,7 @@ public class DepartamentoProductoDAO implements CRUD{
         int id=1;
        String sql = "SELECT MAX(idDepartamentoProducto) from departamentoproducto;";
        try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            rs = ps.executeQuery();
            

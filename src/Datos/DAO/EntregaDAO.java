@@ -1,6 +1,7 @@
 package Datos.DAO;
 
 import Datos.Entidades.Entrega;
+import Presentacion.Interfaces.FramePrincipal;
 import java.util.List;
 import java.sql.*;
 import java.time.LocalDate;
@@ -10,8 +11,8 @@ import java.util.ArrayList;
  * @author sortizu
  */
 public class EntregaDAO implements CRUD{
-    Conexion cn=new Conexion();
-    Connection con;
+    Conexion cn=FramePrincipal.conexion;
+    Connection con=cn.con;
     PreparedStatement ps;
     ResultSet rs;
     @Override
@@ -21,7 +22,7 @@ public class EntregaDAO implements CRUD{
         String sql = 
             "insert into ProveedorProducto(costo,cantidad,fechaEntrega,idProducto,idProveedor,idProveedorProducto)values(?,?,?,?,?,?)";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             ps.setObject(1, o[0]);
             ps.setObject(2, o[1]);
@@ -42,7 +43,7 @@ public class EntregaDAO implements CRUD{
         List<Entrega> lista = new ArrayList<>();
         String sql = "select * from ProveedorProducto";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()){
@@ -63,7 +64,7 @@ public class EntregaDAO implements CRUD{
         Entrega u = null;
         String sql =  "select * from ROOT.VW_ULTIMA_ENTREGA";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(
                  "BEGIN "
                 + "ROOT.ROOT_PROVEEDOR.V_PROVEEDOR_ID_ULT_ENT:="+idProveedor+";"
@@ -89,7 +90,7 @@ public class EntregaDAO implements CRUD{
     public void eliminar(int id) {
         String sql = "delete from ProveedorProducto where idProveedorProducto=?";
         try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            ps.setInt(1,id);
            ps.executeUpdate();
@@ -108,7 +109,7 @@ public class EntregaDAO implements CRUD{
         int id=1;
        String sql = "SELECT MAX(idProveedorProducto) from ProveedorProducto;";
        try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            rs = ps.executeQuery();
            

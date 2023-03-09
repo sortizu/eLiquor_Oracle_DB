@@ -5,6 +5,7 @@
 package Datos.DAO;
 
 import Datos.Entidades.VentaProducto;
+import Presentacion.Interfaces.FramePrincipal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,8 +19,8 @@ import java.util.List;
  */
 public class VentaProductoDAO implements CRUD{
     
-    Conexion cn=new Conexion();
-    Connection con;
+    Conexion cn=FramePrincipal.conexion;
+    Connection con=cn.con;
     PreparedStatement ps;
     ResultSet rs;
 
@@ -30,7 +31,7 @@ public class VentaProductoDAO implements CRUD{
         String sql = 
             "insert into ventaproducto(idVenta, idProducto, cantidadProducto, idVentaProducto ) values(?,?,?,?)";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             
             ps.setObject(1, o[0]);
@@ -59,7 +60,7 @@ public class VentaProductoDAO implements CRUD{
         List<VentaProducto> lista = new ArrayList<>();
         String sql = "select * from ROOT.VENTA_PRODUCTO";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()){
@@ -80,7 +81,7 @@ public class VentaProductoDAO implements CRUD{
         List<VentaProducto> lista = new ArrayList<>();
         String sql = "select * from ROOT.VW_BUSQUEDA_VENTA_PRODUCTO";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(
                     "BEGIN "
                     + "ROOT.ROOT_REPORTE.V_VENTA_ID_REPORTE:=?;"
@@ -108,7 +109,7 @@ public class VentaProductoDAO implements CRUD{
         int id=1;
        String sql = "SELECT MAX(idVentaProducto) from ventaproducto;";
        try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            rs = ps.executeQuery();
            

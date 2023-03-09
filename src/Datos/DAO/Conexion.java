@@ -9,8 +9,8 @@ public class Conexion {
     //Atributos para generar conexión con la BD
     Connection con;
     String url = "jdbc:oracle:thin:@//localhost:1521/XE";
-    private static String user = "";
-    private static String pass = "";
+    private String user = "";
+    private String pass = "";
     
     //Método para realizar la conexión con la BD
     public Connection Conectar() throws SQLException{
@@ -32,8 +32,16 @@ public class Conexion {
         pass=newPass;
     }
 
-    public static String getUser() {
+    public String getUser() {
         return user;
+    }
+
+    public Connection getCon() {
+        return con;
+    }
+
+    public void setCon(Connection con) {
+        this.con = con;
     }
     
 }

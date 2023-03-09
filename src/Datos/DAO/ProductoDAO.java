@@ -3,6 +3,7 @@ package Datos.DAO;
 
 import Datos.Entidades.Entrega;
 import Datos.Entidades.Producto;
+import Presentacion.Interfaces.FramePrincipal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,8 +16,8 @@ import java.util.List;
  * @author richard
  */
 public class ProductoDAO implements CRUD{
-    Conexion cn=new Conexion();
-    Connection con;
+    Conexion cn=FramePrincipal.conexion;
+    Connection con=cn.con;
     PreparedStatement ps;
     ResultSet rs;
     
@@ -27,7 +28,7 @@ public class ProductoDAO implements CRUD{
                     + "ROOT.SP_AGREGAR_PRODUCTO(?,?,?,?,?,?,?,?);"
                     + "END;";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             ps.setObject(1, o[0]);
             ps.setObject(2, o[1]);
@@ -53,7 +54,7 @@ public class ProductoDAO implements CRUD{
         List<Producto> lista = new ArrayList<Producto>();
         String sql = "SELECT * FROM ROOT.VW_PRODUCTOS_EN_DEPARTAMENTO";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(
             "BEGIN ROOT.ROOT_INVENTARIO.V_DEPARTAMENTO_ID_BUSQUEDA:=?; END;"
             );
@@ -85,7 +86,7 @@ public class ProductoDAO implements CRUD{
         List<Producto> lista = new ArrayList<Producto>();
         String sql = "SELECT * FROM ROOT.VW_PRODUCTOS_EN_DEP_CAJA";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(
             "BEGIN ROOT.ROOT_INVENTARIO.V_DEPARTAMENTO_ID_BUSQUEDA:=?; END;"
             );
@@ -117,7 +118,7 @@ public class ProductoDAO implements CRUD{
         Producto p  = new Producto();
         String sql = "SELECT * FROM ROOT.VW_BUSCAR_PRODUCTO";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(
                             "BEGIN "
                             + "ROOT.ROOT_INVENTARIO.V_PRODUCTO_ID_BUSQUEDA:=?;"
@@ -150,7 +151,7 @@ public class ProductoDAO implements CRUD{
                     + "ROOT.SP_INGRESO_PRODUCTO(?,?,?);"
                     + "END;";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             ps.setObject(1, e[0]);
             ps.setObject(2, e[1]);
@@ -172,7 +173,7 @@ public class ProductoDAO implements CRUD{
                     + "ROOT.SP_ELIMINAR_PRODUCTO(?);"
                     + "END;";
         try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            ps.setInt(1, id);
            ps.executeUpdate();
@@ -188,7 +189,7 @@ public class ProductoDAO implements CRUD{
                     + "ROOT.SP_MODIFICAR_PRODUCTO(?,?,?,?,?,?,?,?);"
                     + "END;";
         try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            ps.setObject(1, o[0]);
            ps.setObject(2, o[1]);
@@ -213,7 +214,7 @@ public class ProductoDAO implements CRUD{
         int id=1;
        String sql = "SELECT MAX(idProducto) from producto;";
        try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            rs = ps.executeQuery();
            

@@ -14,6 +14,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -70,7 +71,7 @@ public class VentanaSalir extends VentanaEmergente{
     public void btnAceptarPresionado(MouseEvent evt) {
         int opcionSeleccionada = selectorSalir.getOpcionSeleccionada();
         if(opcionSeleccionada==0){
-            Conexion cn = new Conexion();
+            Conexion cn=FramePrincipal.conexion;
             cn.setStaticRootConfiguration();
             Container cardPanel = parent.getParent();
             CardLayout layout= (CardLayout) cardPanel.getLayout();

@@ -1,6 +1,7 @@
 package Datos.DAO;
 
 import Datos.Entidades.Departamento;
+import Presentacion.Interfaces.FramePrincipal;
 import java.util.List;
 import java.sql.*;
 import java.time.LocalDate;
@@ -12,8 +13,8 @@ import java.util.ArrayList;
  * @author richard
  */
 public class DepartamentoDAO implements CRUD{
-    Conexion cn=new Conexion();
-    Connection con;
+    Conexion cn=FramePrincipal.conexion;
+    Connection con=cn.con;
     PreparedStatement ps;
     ResultSet rs;
     
@@ -25,7 +26,7 @@ public class DepartamentoDAO implements CRUD{
                 + "ROOT.SP_AGREGAR_DEPARTAMENTO(?);"
                 + "END;";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             
             ps.setObject(1, o[0]);
@@ -42,7 +43,7 @@ public class DepartamentoDAO implements CRUD{
         List<Departamento> lista = new ArrayList<>();
         String sql = "select * from ROOT.VW_TOTAL_DEPARTAMENTOS";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()){
@@ -64,7 +65,7 @@ public class DepartamentoDAO implements CRUD{
     public void eliminar(int id) {
         String sql = "delete from departamento where idDepartamento=?";
         try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            ps.setInt(1,id);
            ps.executeUpdate();
@@ -79,7 +80,7 @@ public class DepartamentoDAO implements CRUD{
             +"ROOT.SP_ELIMINAR_DEPARTAMENTO(?);"
             +"END;";
         try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            ps.setInt(1, departamendoID);
            ps.executeUpdate();
@@ -95,7 +96,7 @@ public class DepartamentoDAO implements CRUD{
                     + "ROOT.SP_MODIFICAR_DEPARTAMENTO(?,?);"
                     + "END;";
         try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            ps.setObject(1, o[0]);
            ps.setObject(2, o[1]);

@@ -3,6 +3,8 @@ package Negocio;
 import Datos.DAO.Conexion;
 import Datos.DAO.UsuarioDAO;
 import Datos.Entidades.Usuario;
+import Presentacion.Interfaces.FramePrincipal;
+import java.sql.Connection;
 import java.util.List;
 
 /**
@@ -28,7 +30,7 @@ public class ControlLogin {
     public static boolean verificarPassword(int usuarioID, String ps){
         UsuarioDAO udao = new UsuarioDAO();
         String nombreUsuario = udao.obtenerNombreUsuario(usuarioID);
-        Conexion cn=new Conexion();
+        Conexion cn=FramePrincipal.conexion;
         try {
             cn.setStaticUserConfiguration(nombreUsuario, ps);
             cn.Conectar();

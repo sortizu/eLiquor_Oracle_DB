@@ -1,6 +1,7 @@
 package Datos.DAO;
 
 import Datos.Entidades.Cliente;
+import Presentacion.Interfaces.FramePrincipal;
 import java.util.List;
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,8 +10,8 @@ import java.util.ArrayList;
  * @author 
  */
 public class ClienteDAO implements CRUD{
-    Conexion cn=new Conexion();
-    Connection con;
+    Conexion cn=FramePrincipal.conexion;
+    Connection con=cn.con;
     PreparedStatement ps;
     ResultSet rs;
     @Override
@@ -21,7 +22,7 @@ public class ClienteDAO implements CRUD{
             +"ROOT.SP_AGREGAR_CLIENTE(?,?,?);"
             +"END;";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             ps.setObject(1, o[0]);
             ps.setObject(2, o[1]);
@@ -39,7 +40,7 @@ public class ClienteDAO implements CRUD{
         List<Cliente> lista = new ArrayList<>();
         String sql = "select * from ROOT.VW_TOTAL_CLIENTES";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()){
@@ -61,7 +62,7 @@ public class ClienteDAO implements CRUD{
     public void eliminar(int id) {
         String sql = "delete from cliente where idCliente=?";
         try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            ps.setInt(1,id);
            ps.executeUpdate();
@@ -76,7 +77,7 @@ public class ClienteDAO implements CRUD{
             +"ROOT.SP_ELIMINAR_CLIENTE(?);"
             +"END;";
         try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            ps.setInt(1, id);
            ps.executeUpdate();
@@ -93,7 +94,7 @@ public class ClienteDAO implements CRUD{
             +"ROOT.SP_MODIFICAR_CLIENTE(?,?,?,?);"
             +"END;";
         try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            ps.setObject(1, o[0]);
            ps.setObject(2, o[1]);

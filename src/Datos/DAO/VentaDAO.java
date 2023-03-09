@@ -4,6 +4,7 @@ package Datos.DAO;
 import Datos.Entidades.DetalleVenta;
 import Datos.Entidades.Producto;
 import Datos.Entidades.Venta;
+import Presentacion.Interfaces.FramePrincipal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,8 +26,8 @@ import oracle.sql.StructDescriptor;
  * @author Yos
  */
 public class VentaDAO implements CRUD {
-    Conexion cn=new Conexion();
-    Connection con;
+    Conexion cn=FramePrincipal.conexion;
+    Connection con=cn.con;
     PreparedStatement ps;
     ResultSet rs;
     
@@ -43,7 +44,7 @@ public class VentaDAO implements CRUD {
             +"ROOT.SP_REGISTRO_VENTA(?,?,?,?,?,?);"
             +"END;";
         try{
-            con = cn.Conectar();
+            
             StructDescriptor itemDescriptor =
                 StructDescriptor.createDescriptor("ROOT.TYPE_VENTA_PRODUCTO",con);
             //Array de objetos que describe los atributos del tipo TYPE_VENTA_PRODUCTO
@@ -92,7 +93,7 @@ public class VentaDAO implements CRUD {
         List<Venta> lista = new ArrayList<>();
         String sql = "select * from venta";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()){
@@ -120,7 +121,7 @@ public class VentaDAO implements CRUD {
         List<Venta> lista = new ArrayList<>();
         String sql = "select * from ROOT.VW_VENTAS_PARA_REPORTE";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(
                     "BEGIN "
                     + "ROOT.ROOT_REPORTE.V_REPORTE_FECHA_INICIO:=?;"
@@ -188,7 +189,7 @@ public class VentaDAO implements CRUD {
         int numeroVentas=0;
         String sql = "SELECT ROOT.ROOT_REPORTE.F_NUMERO_DE_VENTAS(?,?) FROM DUAL";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             ps.setDate(1, java.sql.Date.valueOf(fechaInicio));
             ps.setDate(2, java.sql.Date.valueOf(fechaFin));
@@ -205,7 +206,7 @@ public class VentaDAO implements CRUD {
         double valorMercancia=0;
         String sql = "SELECT ROOT.ROOT_REPORTE.F_VALOR_MERCANCIA FROM DUAL";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             rs.next();
@@ -220,7 +221,7 @@ public class VentaDAO implements CRUD {
         int promedioDeVentas=0;
         String sql = "SELECT ROOT.ROOT_REPORTE.F_PROMEDIO_VENTAS_X_DIA(?,?) FROM DUAL";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             ps.setDate(1, java.sql.Date.valueOf(fechaInicio));
             ps.setDate(2, java.sql.Date.valueOf(fechaFin));
@@ -237,7 +238,7 @@ public class VentaDAO implements CRUD {
         double valorDeOrdenPromedio=0;
         String sql = "SELECT ROOT.ROOT_REPORTE.F_VALOR_ORDEN_PROMEDIO(?,?) FROM DUAL";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             ps.setDate(1, java.sql.Date.valueOf(fechaInicio));
             ps.setDate(2, java.sql.Date.valueOf(fechaFin));
@@ -254,7 +255,7 @@ public class VentaDAO implements CRUD {
         int numeroDeProductosVendidos=0;
         String sql = "SELECT ROOT.ROOT_REPORTE.F_PRODUCTOS_VENDIDOS(?,?) FROM DUAL";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             ps.setDate(1, java.sql.Date.valueOf(fechaInicio));
             ps.setDate(2, java.sql.Date.valueOf(fechaFin));
@@ -271,7 +272,7 @@ public class VentaDAO implements CRUD {
         int numeroDeClientesRegistrados=0;
         String sql = "SELECT ROOT.ROOT_REPORTE.F_CLIENTES_REGISTRADOS(?,?) FROM DUAL";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             ps.setDate(1, java.sql.Date.valueOf(fechaInicio));
             ps.setDate(2, java.sql.Date.valueOf(fechaFin));

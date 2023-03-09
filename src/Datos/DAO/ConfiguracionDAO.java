@@ -1,6 +1,7 @@
 package Datos.DAO;
 
 import Datos.Entidades.Configuracion;
+import Presentacion.Interfaces.FramePrincipal;
 import java.util.List;
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,8 +10,8 @@ import java.util.ArrayList;
  * @author 
  */
 public class ConfiguracionDAO implements CRUD{
-    Conexion cn=new Conexion();
-    Connection con;
+    Conexion cn=FramePrincipal.conexion;
+    Connection con=cn.con;
     PreparedStatement ps;
     ResultSet rs;
     @Override
@@ -28,7 +29,7 @@ public class ConfiguracionDAO implements CRUD{
         Configuracion c = null;
         String sql = "select * from VW_CONFIGURACION_SISTEMA";
         try{
-            con = cn.Conectar();
+            
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             rs.next();
@@ -59,7 +60,7 @@ public class ConfiguracionDAO implements CRUD{
                     + "ROOT.SP_GUARDAR_CONFIGURACION(?,?,?,?,?,?,?,?,?,?);"
                     + "END;";
         try{
-           con = cn.Conectar();
+           
            ps = con.prepareStatement(sql);
            ps.setObject(1, o[0]);
            ps.setObject(2, o[1]);
