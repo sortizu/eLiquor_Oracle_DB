@@ -57,17 +57,44 @@ public class VentaProductoDAO implements CRUD{
     @Override
     public List listar() {
         List<VentaProducto> lista = new ArrayList<>();
-        String sql = "select * from ventaproducto";
+        String sql = "select * from ROOT.VENTA_PRODUCTO";
         try{
             con = cn.Conectar();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()){
                 VentaProducto p = new VentaProducto();
-                p.setIdVentaProducto(rs.getInt(1));
-                p.setIdVenta(rs.getInt(2));
-                p.setIdProducto(rs.getInt(3));
-                p.setCantidadProducto(rs.getInt(4));
+                p.setIdVenta(rs.getInt(1));
+                p.setIdProducto(rs.getInt(2));
+                p.setCantidadProducto(rs.getInt(3));
+                
+                lista.add(p);
+            }
+        }catch(SQLException e){
+             System.out.println(e.toString());
+         }
+        return lista;
+    }
+    
+    public List cargarDetalleDeVenta(int ventaID){
+        List<VentaProducto> lista = new ArrayList<>();
+        String sql = "select * from ROOT.VW_BUSQUEDA_VENTA_PRODUCTO";
+        try{
+            con = cn.Conectar();
+            ps = con.prepareStatement(
+                    "BEGIN "
+                    + "ROOT.ROOT_REPORTE.V_VENTA_ID_REPORTE:=?;"
+                    + "END;"
+            );
+            ps.setObject(1, ventaID);
+            ps.executeUpdate();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                VentaProducto p = new VentaProducto();
+                p.setIdVenta(rs.getInt(1));
+                p.setIdProducto(rs.getInt(2));
+                p.setCantidadProducto(rs.getInt(3));
                 
                 lista.add(p);
             }

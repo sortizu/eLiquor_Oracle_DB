@@ -115,31 +115,29 @@ public class ProductoDAO implements CRUD{
     
     public Producto obtenerProductoPorSuID(int idProducto) {
         Producto p  = new Producto();
-        String sql = "select nombre, precio, costo, stock, precioVariable, "+
-                "activarDescuentos, mostrarEnCaja, fechaRegistro, "
-                +"IGV, ISC from producto where idProducto=?";
+        String sql = "SELECT * FROM ROOT.VW_BUSCAR_PRODUCTO";
         try{
             con = cn.Conectar();
-            ps = con.prepareStatement(sql);
+            ps = con.prepareStatement(
+                            "BEGIN "
+                            + "ROOT.ROOT_INVENTARIO.V_PRODUCTO_ID_BUSQUEDA:=?;"
+                            + "END;"
+            );
             ps.setObject(1, idProducto);
-            
+            ps.executeUpdate();
+            ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()){
                 p.setIdProducto(idProducto);
-                p.setNombre(rs.getString(1));
-                p.setPrecio(rs.getDouble(2));
-                p.setCosto(rs.getDouble(3));
-                p.setStock(rs.getInt(4));
-                p.setPrecioVariable(rs.getBoolean(5));
-                p.setActivarDescuentos(rs.getBoolean(6));
-                p.setMostrarEnCaja(rs.getBoolean(7));
-                p.setFechaRegistro(rs.getDate(8).toLocalDate());
-                p.setIGV(rs.getBoolean(9));
-                p.setISC(rs.getBoolean(10));
+                p.setNombre(rs.getString(2));
+                p.setPrecio(rs.getDouble(3));
+                p.setCosto(rs.getDouble(4));
+                p.setStock(rs.getInt(5));
+                p.setPrecioVariable(rs.getBoolean(6));
+                p.setActivarDescuentos(rs.getBoolean(7));
+                p.setMostrarEnCaja(rs.getBoolean(8));
+                p.setFechaRegistro(rs.getDate(9).toLocalDate());
             }
-                
-                
-                
                 
         }catch(SQLException e){
              System.out.println(e.toString());

@@ -25,32 +25,38 @@ import java.util.ArrayList;
 public class ControlReportes {
     public static ArrayList<Venta> cargarVentas(LocalDate fechaInicio, LocalDate fechaFin){
         VentaDAO vdao = new VentaDAO();
-        ArrayList<Venta> ventasCargadas = (ArrayList<Venta>)vdao.listar();
-        ArrayList<Venta> ventasCargadasEnFechas = new ArrayList<Venta>();
-        for (Venta v:ventasCargadas) {
-            if(v.getFechaRegistro().compareTo(fechaInicio)>=0
-                    &&v.getFechaRegistro().compareTo(fechaFin)<=0){
-                v.setDetallesVenta(obtenerDetalleVenta(v.getIdVenta()));
-                ventasCargadasEnFechas.add(v);
-            }
-        }
-        return ventasCargadasEnFechas;
+        ArrayList<Venta> ventasCargadas = (ArrayList<Venta>)vdao.cargarVentasDeReporte(fechaInicio,fechaFin);
+        return ventasCargadas;
+    }
+    
+    public static int obtenerNumeroDeVentas(LocalDate fechaInicio, LocalDate fechaFin){
+        VentaDAO vdao = new VentaDAO();
+        return vdao.obtenerNumeroDeVentas(fechaInicio, fechaFin);
     }
     
     public static double obtenerValorMercanciaEnTienda(){
-        double valor=0;
-        ProductoDAO pdao=new ProductoDAO();
-        ArrayList<Producto> productos = (ArrayList<Producto>)pdao.listar();
-        for(Producto p:productos){
-            valor+=p.getCosto()*p.getStock();
-        }
-        return valor;
+        VentaDAO vdao = new VentaDAO();
+        return vdao.obtenerValorMercanciaEnTienda();
     }
     
-    public static int obtenerTotalClientesRegistrados(){
-        ClienteDAO cdao = new ClienteDAO();
-        ArrayList<Cliente> clientesRegistrados = (ArrayList<Cliente>)cdao.listar();
-        return clientesRegistrados.size();
+    public static int obtenerPromedioDeVentasPorDia(LocalDate fechaInicio, LocalDate fechaFin){
+        VentaDAO vdao = new VentaDAO();
+        return vdao.obtenerPromedioDeVentasPorDia(fechaInicio, fechaFin);
+    }
+    
+    public static double obtenerValorDeOrdenPromedio(LocalDate fechaInicio, LocalDate fechaFin){
+        VentaDAO vdao = new VentaDAO();
+        return vdao.obtenerValorDeOrdenPromedio(fechaInicio, fechaFin);
+    }
+    
+    public static int obtenerNumeroDeProductosVendidos(LocalDate fechaInicio, LocalDate fechaFin){
+        VentaDAO vdao = new VentaDAO();
+        return vdao.obtenerNumeroDeProductosVendidos(fechaInicio, fechaFin);
+    }
+    
+    public static int obtenerTotalClientesRegistrados(LocalDate fechaInicio, LocalDate fechaFin){
+        VentaDAO vdao = new VentaDAO();
+        return vdao.obtenerTotalClientesRegistrados(fechaInicio, fechaFin);
     }
     
     public static Cliente cargarCliente(int idCliente){
@@ -81,23 +87,4 @@ public class ControlReportes {
     todos los datos que el usuario pudo haber editado sobre un 
     producto de la lista de items.
     */
-    public static ArrayList<DetalleVenta> obtenerDetalleVenta(int idVenta){
-        VentaProductoDAO vpdao=new VentaProductoDAO();
-        ProductoDAO pdao = new ProductoDAO();
-        ArrayList<VentaProducto> relVentaProd = (ArrayList<VentaProducto>)vpdao.listar();
-        ArrayList<DetalleVenta> detalleVenta = new ArrayList<DetalleVenta>();
-        
-        for(VentaProducto vp:relVentaProd){
-            if(vp.getIdVenta()==idVenta){
-                Producto p = pdao.obtenerProductoPorSuID(vp.getIdProducto());
-                DetalleVenta ndv = new DetalleVenta();
-                ndv.setPrecio(p.getPrecio());
-                ndv.setCantidad(vp.getCantidadProducto());
-                ndv.setProducto(p);
-                detalleVenta.add(ndv);
-            }
-        }
-        
-        return detalleVenta;
-    }
 }

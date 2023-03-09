@@ -25,7 +25,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -271,11 +270,12 @@ public class PanelDeReportes extends JPanel{
                     String [] strFechaFin=txtFechaFin.getText().split("/");
                     LocalDate nuevaFechaInicio=LocalDate.of(Integer.parseInt(strFechaInicio[2]),Integer.parseInt(strFechaInicio[1]),Integer.parseInt(strFechaInicio[0]));
                     LocalDate nuevaFechaFin=LocalDate.of(Integer.parseInt(strFechaFin[2]),Integer.parseInt(strFechaFin[1]),Integer.parseInt(strFechaFin[0]));
+                    actualizarResumen();
                     ventasCargadas=ControlReportes.cargarVentas(nuevaFechaInicio, nuevaFechaFin);
                     fechaInicio=nuevaFechaInicio;
                     fechaFin=nuevaFechaFin;
                     mostrarVentasCargadasEnTabla();
-                    actualizarResumen();
+                    
                 }
                 catch(Exception er){System.err.println(er);}
             }
@@ -410,6 +410,7 @@ public class PanelDeReportes extends JPanel{
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 actualizarDetalleVentas(tablaVentas.getTabla().getSelectedRow());
+                //actualizarResumen();
             }
         });
         gbc.insets=new Insets(bordeTabla, bordeTabla, 0, bordeTabla);
@@ -870,26 +871,13 @@ public class PanelDeReportes extends JPanel{
     }
     
     private void actualizarResumen(){
-        long cantidadDias=ChronoUnit.DAYS.between(fechaInicio,fechaFin);
-        int numVentas = ventasCargadas.size();
+        int numVentas = ControlReportes.obtenerNumeroDeVentas(fechaInicio, fechaFin);
         double valorMercancia= ControlReportes.obtenerValorMercanciaEnTienda();
-        long promVentas=numVentas;
-        double valorOrdenProm=0;
-        int prodVendidos=0;
-        int clientesRegistrados=ControlReportes.obtenerTotalClientesRegistrados();
+        long promVentas=ControlReportes.obtenerPromedioDeVentasPorDia(fechaInicio, fechaFin);
+        double valorOrdenProm=ControlReportes.obtenerValorDeOrdenPromedio(fechaInicio, fechaFin);
+        int prodVendidos=ControlReportes.obtenerNumeroDeProductosVendidos(fechaInicio, fechaFin);
+        int clientesRegistrados=ControlReportes.obtenerTotalClientesRegistrados(fechaInicio,fechaFin);
         
-        for (Venta v:ventasCargadas) {
-            valorOrdenProm+=v.getVentaBruta();
-            for(DetalleVenta dv:v.getDetallesVenta()){
-                prodVendidos+=dv.getCantidad();
-            }
-        }
-        if(numVentas>0){
-            valorOrdenProm=valorOrdenProm/numVentas;
-        }
-        if(cantidadDias>0){
-            promVentas=promVentas/cantidadDias;
-        }
         
          lblNumVentas.getValorInfoResumen().setText(Integer.toString(numVentas));
          lblNumVentas.setToolTipText(Integer.toString(numVentas));
@@ -954,9 +942,9 @@ public class PanelDeReportes extends JPanel{
             lblValTotalImp.setText("S/."+Double.toString(v.getTotalImpuestos()));
             lblValTotDesc.setText("S/."+Double.toString(v.getTotalDescuento()));
             lblValPago.setText("S/."+Double.toString(v.getPagoCliente()));
-            lblValCambio.setText("S/."+Double.toString(v.getCambio()));
+            lblValCambio.setText("S/."+Double.toString(v.getPagoCliente()-v.getVentaBruta()));
             lblValVentaBruta.setText("S/."+Double.toString(v.getVentaBruta()));
-            lblValVentaNeta.setText("S/."+Double.toString(v.getVentaNeta()));
+            lblValVentaNeta.setText("S/."+Double.toString(v.getVentaBruta()-v.getTotalImpuestos()));
             lblValUtilBruta.setText("S/."+Double.toString(v.getVentaBruta()-v.getTotalCosto()));
             lblValTotCosto.setText("S/."+Double.toString(v.getTotalCosto()));
             lblValUtilNeta.setText(String.format("S/.%.2f", v.getVentaBruta()-v.getTotalCosto()-v.getTotalImpuestos()));

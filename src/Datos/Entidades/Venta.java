@@ -155,15 +155,7 @@ public class Venta {
     }
     
     public double getTotalImpuestos() {
-        double nuevoImpuesto=0;
-        if(totalImpuestos<0){
-            for(DetalleVenta dv:detallesVenta){
-            nuevoImpuesto+=dv.getImpuestos();
-            }
-        }else{
-            nuevoImpuesto=totalImpuestos;
-        }
-        return nuevoImpuesto;
+        return totalImpuestos;
     }
 
     public void setTotalCantidad(int totalCantidad) {
