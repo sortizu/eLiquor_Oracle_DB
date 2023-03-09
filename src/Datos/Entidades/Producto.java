@@ -18,7 +18,8 @@ public class Producto {
     private LocalDate fechaRegistro;
     private boolean IGV;
     private boolean ISC;
-
+    private int departamentoID=-1;
+    
     public Producto() {
     }
 
@@ -121,4 +122,13 @@ public class Producto {
     public void setFechaRegistro(LocalDate fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
+
+    public int getDepartamentoID() {
+        return departamentoID;
+    }
+
+    public void setDepartamentoID(int departamentoID) {
+        this.departamentoID = departamentoID;
+    }
+    
 }

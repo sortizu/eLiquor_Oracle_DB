@@ -20,17 +20,15 @@ public class DepartamentoDAO implements CRUD{
     @Override
     public int add(Object[] o) {
         int r = 0;
-        int id=setLastId()+1;
         String sql = 
-            "insert into departamento(fechaRegistro, nombre, cantidad, idDepartamento) values(?,?,?,?)";
+                "BEGIN "
+                + "ROOT.SP_AGREGAR_DEPARTAMENTO(?);"
+                + "END;";
         try{
             con = cn.Conectar();
             ps = con.prepareStatement(sql);
             
             ps.setObject(1, o[0]);
-            ps.setObject(2, o[1]);
-            ps.setObject(3, o[2]);
-            ps.setObject(4, id);
             r=ps.executeUpdate();
         }catch(SQLException e){
              System.out.println(e.toString());
@@ -42,7 +40,7 @@ public class DepartamentoDAO implements CRUD{
     @Override
     public List listar() {
         List<Departamento> lista = new ArrayList<>();
-        String sql = "select * from departamento";
+        String sql = "select * from ROOT.VW_TOTAL_DEPARTAMENTOS";
         try{
             con = cn.Conectar();
             ps = con.prepareStatement(sql);
@@ -75,18 +73,32 @@ public class DepartamentoDAO implements CRUD{
         }
     }
     
+    public void eliminacionLogica(int departamendoID){
+        String sql = 
+            "BEGIN "
+            +"ROOT.SP_ELIMINAR_DEPARTAMENTO(?);"
+            +"END;";
+        try{
+           con = cn.Conectar();
+           ps = con.prepareStatement(sql);
+           ps.setInt(1, departamendoID);
+           ps.executeUpdate();
+       }catch(SQLException e){
+            System.out.println(e.toString());
+        }
+    }
+    
     @Override
     public int actualizar(Object[] o) {
         int r = 0;
-        String sql = "update departamento set fechaRegistro=?, nombre=?, cantidad=?"
-                + " where idDepartamento=?";
+        String sql = "BEGIN "
+                    + "ROOT.SP_MODIFICAR_DEPARTAMENTO(?,?);"
+                    + "END;";
         try{
            con = cn.Conectar();
            ps = con.prepareStatement(sql);
            ps.setObject(1, o[0]);
            ps.setObject(2, o[1]);
-           ps.setObject(3, o[2]);
-           ps.setObject(4, o[3]);
            
            r = ps.executeUpdate();
        }catch(SQLException e){
@@ -94,26 +106,4 @@ public class DepartamentoDAO implements CRUD{
         }
        return r;
     }
-    
-    
-    public int setLastId(){
-        int id=1;
-       String sql = "SELECT MAX(idDepartamento) from departamento;";
-       try{
-           con = cn.Conectar();
-           ps = con.prepareStatement(sql);
-           rs = ps.executeQuery();
-           
-           rs.beforeFirst();
-           rs.next();
-           
-           id = rs.getInt(1);
-           
-       }catch(SQLException e){
-            System.out.println(e.toString());
-        }
-       return id;
-    }
-       
-    
 }

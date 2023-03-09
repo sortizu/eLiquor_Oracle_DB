@@ -61,12 +61,12 @@ public class EntregaDAO implements CRUD{
     
     public Entrega ObtenerUltimaEntregaDeProveedor(int idProveedor) {
         Entrega u = null;
-        String sql =  "select * from VW_ULTIMA_ENTREGA";
+        String sql =  "select * from ROOT.VW_ULTIMA_ENTREGA";
         try{
             con = cn.Conectar();
             ps = con.prepareStatement(
                  "BEGIN "
-                + "ROOT_PROVEEDOR.V_PROVEEDOR_ID_ULT_ENT:="+idProveedor+";"
+                + "ROOT.ROOT_PROVEEDOR.V_PROVEEDOR_ID_ULT_ENT:="+idProveedor+";"
                 + "END;"
             );
             ps.executeUpdate();

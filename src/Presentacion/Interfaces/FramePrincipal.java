@@ -5,6 +5,9 @@
 package Presentacion.Interfaces;
 
 import Datos.DAO.Conexion;
+import Datos.DAO.ProductoDAO;
+import Datos.Entidades.Producto;
+import Negocio.ControlInventario;
 import Presentacion.Interfaces.Clientes.Clientes;
 import Presentacion.Utilidades.UtilidadSesion;
 import java.awt.CardLayout;
@@ -75,6 +78,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         UtilidadSesion.nombreUsuarioActual="Debug";
         
         //Cambiar a partir de aqui
+
         
         //Descomenta las tres lineas de abajo para entrar directamente al modulo de login
         Login login = new Login();

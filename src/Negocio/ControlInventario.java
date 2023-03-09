@@ -40,27 +40,8 @@ public class ControlInventario {
     //------------------------------LISTO-----------
     public static ArrayList<Producto> cargarProductos(int idDepartamento){
 
-        
-        DepartamentoProductoDAO dpdao = new DepartamentoProductoDAO();
         ProductoDAO pdao = new ProductoDAO();
-        ArrayList<Producto> productosCargados=new ArrayList<Producto>();
-        
-        if(idDepartamento == -1){
-         
-            productosCargados=(ArrayList)pdao.listar();    
-        }
-        if(idDepartamento >= 0){
-            
-            
-            for(Object dp: dpdao.obtenerIdDeProducto(idDepartamento)){
-                Integer id = (Integer)dp;
-                
-                Producto p = pdao.obtenerProductoPorSuID(id.intValue()); 
-                productosCargados.add(p);
-            }
-        }
-       
-        
+        ArrayList<Producto> productosCargados=(ArrayList<Producto>)pdao.listarProductosDeDepartamento(idDepartamento);
         return productosCargados;
 
     }
@@ -102,13 +83,9 @@ public class ControlInventario {
     
     //---------------------------LISTO---------------------------
     public static void agregarDepartamento(Departamento nuevoDepartamento){
-
-        
         DepartamentoDAO ddao=new DepartamentoDAO();
-        ddao.add(new Object[]{
-            nuevoDepartamento.getFechaRegistro(), nuevoDepartamento.getNombre(),nuevoDepartamento.getCantidad()}    
+        ddao.add(new Object[]{nuevoDepartamento.getNombre()}    
         );
-
     }
     
     
@@ -120,8 +97,7 @@ public class ControlInventario {
         pdao.add(new Object[]{
             nuevoProducto.getNombre(),nuevoProducto.getPrecio(),nuevoProducto.getCosto(),
             nuevoProducto.getStock(),nuevoProducto.isPrecioVariable(),
-            nuevoProducto.isActivarDescuentos(),nuevoProducto.isMostrarEnCaja(),
-            nuevoProducto.getFechaRegistro(), nuevoProducto.isIGV(), nuevoProducto.isISC(),});
+            nuevoProducto.isActivarDescuentos(),nuevoProducto.isMostrarEnCaja(),nuevoProducto.getDepartamentoID()<0?null:nuevoProducto.getDepartamentoID()});
 
     }
     
@@ -178,10 +154,8 @@ public class ControlInventario {
     public static void modificarDepartamento(Departamento departamentoModificado){
         
         DepartamentoDAO ddao=new DepartamentoDAO();
-        Object[] datos={departamentoModificado.getFechaRegistro(),departamentoModificado.getNombre(),
-            departamentoModificado.getCantidad(),
-        departamentoModificado.getIdDepartamento()};
-        
+        Object[] datos={departamentoModificado.getIdDepartamento(),departamentoModificado.getNombre(),
+        };
         ddao.actualizar(datos);
     }
     
@@ -190,11 +164,15 @@ public class ControlInventario {
 
         
         ProductoDAO pdao=new ProductoDAO();
-        Object[] datos={productoModificado.getNombre(),productoModificado.getPrecio(),
-            productoModificado.getCosto(), productoModificado.getStock(),productoModificado.isPrecioVariable(),
-            productoModificado.isActivarDescuentos(), productoModificado.isMostrarEnCaja(),
-            productoModificado.getFechaRegistro(), productoModificado.isIGV(), productoModificado.isISC(),
-            productoModificado.getIdProducto()};
+        Object[] datos={
+            productoModificado.getIdProducto(),
+            productoModificado.getNombre(),
+            productoModificado.getPrecio(),
+            productoModificado.getCosto(), 
+            productoModificado.getStock(),
+            productoModificado.isPrecioVariable(),
+            productoModificado.isActivarDescuentos(),
+            productoModificado.isMostrarEnCaja()};
         
             pdao.actualizar(datos);
     }
@@ -205,9 +183,7 @@ public class ControlInventario {
         
         DepartamentoDAO ddao=new DepartamentoDAO();
         for (Departamento departamento: departamentosABorrar) {
-            eliminarProductos(cargarProductos(departamento.getIdDepartamento()));
-            ddao.eliminar(departamento.getIdDepartamento());
-            
+            ddao.eliminacionLogica(departamento.getIdDepartamento());
         }
     }
     
@@ -216,18 +192,7 @@ public class ControlInventario {
         ProductoDAO pdao=new ProductoDAO();
         for (Producto producto: productosABorrar) {
             pdao.eliminacionLogica(producto.getIdProducto());
-            eliminarProductoDeDepartamento(producto.getIdProducto());
-            
         }
-    }
-    
-    
-
-    public static int obtenerUltimoIDDepartamento(){
-
-        DepartamentoDAO ddao=new DepartamentoDAO();
-        return ddao.setLastId();
-
     }
     
 
@@ -239,14 +204,12 @@ public class ControlInventario {
     }
     
     public static void registrarEntrega(Entrega nuevaEntrega){
-        EntregaDAO edao = new EntregaDAO();
+        ProductoDAO pdao = new ProductoDAO();
         Object[] datos={
-            nuevaEntrega.getCosto(),
-            nuevaEntrega.getCantidad(),
-            nuevaEntrega.getFechaEntrega(),
             nuevaEntrega.getItem().getIdProducto(),
-            nuevaEntrega.getProveedor().getIdProveedor()
+            nuevaEntrega.getProveedor().getIdProveedor(),
+            nuevaEntrega.getCantidad()
         };
-        edao.add(datos);
+        pdao.registrarEntregaProducto(datos);
     }
 }

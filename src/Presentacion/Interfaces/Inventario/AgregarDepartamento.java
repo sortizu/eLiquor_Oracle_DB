@@ -98,10 +98,9 @@ public class AgregarDepartamento extends VentanaEmergente{
         if(txtNombre.getText().isBlank()){
                 lblAlertaNombre.setVisible(true);
         }else{
-                Departamento nuevoDepartamento = new Departamento(ControlInventario.obtenerUltimoIDDepartamento()+1,txtNombre.getText(),LocalDate.now());
-                panelPrincipalDeModuloDeInventario.departamentos.add(nuevoDepartamento);
-                panelPrincipalDeModuloDeInventario.agregarDepartamentoATabla(nuevoDepartamento);
+                Departamento nuevoDepartamento = new Departamento(0,txtNombre.getText(),null);
                 ControlInventario.agregarDepartamento(nuevoDepartamento);
+                panelPrincipalDeModuloDeInventario.cargarListaDeDepartamentos();
                 ((FramePrincipal)((JFrame) SwingUtilities.getWindowAncestor(this))).cerrarPanelesEmergentes();
                 panelPrincipalDeModuloDeInventario.reiniciarBusqueda();
         }

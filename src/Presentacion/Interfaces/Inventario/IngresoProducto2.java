@@ -170,9 +170,7 @@ public class IngresoProducto2 extends VentanaEmergente{
             Proveedor p = proveedores.get(ListaDeProveedores.convertRowIndexToModel(ListaDeProveedores.getSelectedRow()));
             nuevaEntrega.setProveedor(p);
             nuevaEntrega.getItem().setStock(nuevaEntrega.getItem().getStock()+nuevaEntrega.getCantidad());
-            nuevaEntrega.setFechaEntrega(LocalDate.now());
             ControlInventario.registrarEntrega(nuevaEntrega);
-            ControlInventario.modificarProducto(nuevaEntrega.getItem());
             if(panelPrincipalDeModuloDeInventario.departamentoActual!=null){
                 panelPrincipalDeModuloDeInventario.cargarListaDeProductos(panelPrincipalDeModuloDeInventario.departamentoActual.getIdDepartamento());
             }else{
