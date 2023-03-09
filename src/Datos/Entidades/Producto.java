@@ -16,8 +16,8 @@ public class Producto {
     private boolean mostrarEnCaja;
     private boolean activarDescuentos;
     private LocalDate fechaRegistro;
-    private boolean IGV;
-    private boolean ISC;
+    private boolean IGV=true;
+    private boolean ISC=true;
     private int departamentoID=-1;
     
     public Producto() {

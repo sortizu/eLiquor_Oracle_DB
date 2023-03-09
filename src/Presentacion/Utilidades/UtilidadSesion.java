@@ -30,4 +30,5 @@ public class UtilidadSesion {
             configuracionActual=tempConf;
         }
     }
+    
 }

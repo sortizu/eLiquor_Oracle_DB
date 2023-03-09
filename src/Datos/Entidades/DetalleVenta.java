@@ -11,8 +11,8 @@ public class DetalleVenta {
     private double descuento;
     private double impuestos=-1;
     private double total;
-    private boolean IGV; //Reemplaza al del producto
-    private boolean ISC; //Reemplaza al del producto
+    private boolean IGV=true; //Reemplaza al del producto
+    private boolean ISC=true; //Reemplaza al del producto
 
     public DetalleVenta() {
     }

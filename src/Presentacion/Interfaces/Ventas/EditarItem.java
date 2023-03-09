@@ -45,10 +45,8 @@ public class EditarItem extends VentanaEmergente implements PropertyChangeListen
     private TextFieldRedondeado txtDescuento;
     private JLabel lblImpuestos;
     private JLabel lblIGV;
-    private Selector selectorIGV;
     private JLabel lblIGVMonto;
     private JLabel lblISC;
-    private Selector selectorISC;
     private JLabel lblISCMonto;
     private JLabel lblSubTotal;
     private JLabel lblTotal;
@@ -258,30 +256,16 @@ public class EditarItem extends VentanaEmergente implements PropertyChangeListen
         mostradorCamposDerecho.add(lblIGV,gbc);
         gbc.insets=new Insets(0, 0, 5, 0);
         
-        selectorIGV=new Selector(new String[]{"SI","NO"},50,37);
-        selectorIGV.setFuenteDeOpcion(UtilidadesFuentes.InterRegular.deriveFont(15.0f));
-        selectorIGV.setColorDeFuente(Color.decode("#8C8C8C"));
-        selectorIGV.solicitarSeleccion(detalleVentaAModificar.isIGV()?0:1);
-        selectorIGV.addColorDeOpcion(Color.decode("#72AD57"));
-        selectorIGV.addColorDeOpcion(Color.decode("#AD5757"));
-        selectorIGV.setNombreDeSelector("SIGV");
-        selectorIGV.addPropertyChangeListener(this);
-        gbc.anchor=GridBagConstraints.CENTER;
-        gbc.gridx=1;
-        gbc.gridy=1;
-        gbc.fill=GridBagConstraints.NONE;
-        gbc.weightx=1;
-        mostradorCamposDerecho.add(selectorIGV,gbc);
         
         lblIGVMonto =new JLabel("Monto: S/. 0.00");
-        lblIGVMonto.setFont(UtilidadesFuentes.InterLight.deriveFont(18.0f));
+        lblIGVMonto.setFont(UtilidadesFuentes.InterLight.deriveFont(22.0f));
         lblIGVMonto.setForeground(Color.decode("#8C8C8C"));
         lblIGVMonto.setHorizontalAlignment(JLabel.RIGHT);
-        gbc.gridx=0;
-        gbc.gridy=2;
+        gbc.gridx=1;
+        gbc.gridy=1;
         gbc.fill=GridBagConstraints.HORIZONTAL;
         gbc.weightx=1;
-        gbc.gridwidth=2;
+        //gbc.gridwidth=2;
         mostradorCamposDerecho.add(lblIGVMonto,gbc);
         
         
@@ -290,41 +274,28 @@ public class EditarItem extends VentanaEmergente implements PropertyChangeListen
         lblISC.setForeground(Color.decode("#8C8C8C"));
         lblISC.setHorizontalAlignment(JLabel.CENTER);
         gbc.insets=new Insets(0, 30, 5, 0);
+        gbc.anchor=GridBagConstraints.PAGE_START;
         gbc.gridx=0;
-        gbc.gridy=3;
+        gbc.gridy=2;
         gbc.fill=GridBagConstraints.HORIZONTAL;
         gbc.weightx=1;
-        gbc.weighty=0;
+        gbc.weighty=1;
         gbc.gridwidth=1;
         mostradorCamposDerecho.add(lblISC,gbc);
         gbc.insets=new Insets(0, 0, 5, 0);
         
-        selectorISC=new Selector(new String[]{"SI","NO"},50,37);
-        selectorISC.setFuenteDeOpcion(UtilidadesFuentes.InterRegular.deriveFont(15.0f));
-        selectorISC.setColorDeFuente(Color.decode("#8C8C8C"));
-        selectorISC.solicitarSeleccion(detalleVentaAModificar.isISC()?0:1);
-        selectorISC.addColorDeOpcion(Color.decode("#72AD57"));
-        selectorISC.addColorDeOpcion(Color.decode("#AD5757"));
-        selectorISC.setNombreDeSelector("SISC");
-        selectorISC.addPropertyChangeListener(this);
-        gbc.anchor=GridBagConstraints.CENTER;
-        gbc.gridx=1;
-        gbc.gridy=3;
-        gbc.fill=GridBagConstraints.NONE;
-        gbc.weightx=1;
-        mostradorCamposDerecho.add(selectorISC,gbc);
         
         lblISCMonto =new JLabel("Monto: S/. 0.00");
-        lblISCMonto.setFont(UtilidadesFuentes.InterLight.deriveFont(18.0f));
+        lblISCMonto.setFont(UtilidadesFuentes.InterLight.deriveFont(22.0f));
         lblISCMonto.setForeground(Color.decode("#8C8C8C"));
         lblISCMonto.setHorizontalAlignment(JLabel.RIGHT);
         gbc.anchor=GridBagConstraints.PAGE_START;
-        gbc.gridx=0;
-        gbc.gridy=4;
+        gbc.gridx=1;
+        gbc.gridy=2;
         gbc.fill=GridBagConstraints.HORIZONTAL;
         gbc.weightx=1;
         gbc.weighty=1;
-        gbc.gridwidth=2;
+        //gbc.gridwidth=2;
         mostradorCamposDerecho.add(lblISCMonto,gbc);
         //Panel inferior
         JPanel mostradorCamposInferior=new JPanel();
@@ -437,12 +408,8 @@ public class EditarItem extends VentanaEmergente implements PropertyChangeListen
                     int cantidad = (int)Double.parseDouble(txtCantidad.getText());
                     detalleVentaAModificar.setCantidad(cantidad);
                     detalleVentaAModificar.setPrecio(precio);
-                    if(selectorIGV.getOpcionSeleccionada()==0){
-                        lblIGVMonto.setText(String.format("Monto: S/. %.2f",precio*0.17*cantidad));           
-                    }
-                    if(selectorISC.getOpcionSeleccionada()==0){
-                        lblISCMonto.setText(String.format("Monto: S/. %.2f",2.72*cantidad));
-                    }
+                    lblIGVMonto.setText(String.format("Monto: S/. %.2f",precio*0.17*cantidad));           
+                    lblISCMonto.setText(String.format("Monto: S/. %.2f",2.72*cantidad));
                 } catch (NumberFormatException er) {
                     detalleVentaAModificar.setPrecio(detalleVentaAModificar.getProducto().getPrecio());
                     lblIGVMonto.setText(String.format("Monto: S/. %.2f",0f));
@@ -486,18 +453,9 @@ public class EditarItem extends VentanaEmergente implements PropertyChangeListen
             }
 
     });
+        lblIGVMonto.setText(String.format("Monto: S/. %.2f",detalleVentaAModificar.getPrecio()*0.17*detalleVentaAModificar.getCantidad()));
         
-        if(selectorIGV.getOpcionSeleccionada()==0){
-            lblIGVMonto.setText(String.format("Monto: S/. %.2f",detalleVentaAModificar.getPrecio()*0.17*detalleVentaAModificar.getCantidad()));
-        }else{
-            lblIGVMonto.setText("Monto: S/. 0.00");
-        }
-        
-        if(selectorISC.getOpcionSeleccionada()==0){
-            lblISCMonto.setText(String.format("Monto: S/. %.2f",2.72*detalleVentaAModificar.getCantidad()));
-        }else{
-            lblISCMonto.setText("Monto: S/. 0.00");
-        }
+        lblISCMonto.setText(String.format("Monto: S/. %.2f",2.72*detalleVentaAModificar.getCantidad()));
         actualizarDatosItem();
         
         if(!detalleVentaAModificar.getProducto().isActivarDescuentos()){

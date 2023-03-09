@@ -19,6 +19,7 @@ import Presentacion.Interfaces.Selector;
 import Presentacion.Interfaces.TablaDefault;
 import Presentacion.Interfaces.TablaItem;
 import Presentacion.Interfaces.TextFieldRedondeado;
+import Presentacion.Utilidades.UtilidadSesion;
 import Presentacion.Utilidades.UtilidadesFuentes;
 import java.awt.Color;
 import java.awt.Container;
@@ -37,6 +38,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
@@ -123,6 +125,7 @@ public class PanelDeVentas extends JPanel implements PropertyChangeListener{
         iniciarComponentes();
         TablaListaDeVenta.getTabla().revalidate();
         TablaListaDeVenta.getTabla().repaint();
+        actualizarDatosVenta();
         //TablaListaDeItems.getTabla().revalidate();
         //TablaListaDeItems.getTabla().repaint();
     }
@@ -758,9 +761,11 @@ public class PanelDeVentas extends JPanel implements PropertyChangeListener{
         btnPago=new BotonRedondeado(10, 3, Color.decode("#8CC560"),"PAGO",UtilidadesFuentes.InterRegular.deriveFont(17.0f)){
             @Override
             public void botonPresionado() {
-                VentaPago1 ventaPago1 = new VentaPago1(panelPrincipalVentas,ventaActual);
-                ((FramePrincipal) SwingUtilities.getWindowAncestor(panelPrincipalVentas)).mostrarPanelEmergente(ventaPago1);
-                ventaPago1.requestFocus();
+                if (btnPago.isEstado()){
+                    VentaPago1 ventaPago1 = new VentaPago1(panelPrincipalVentas,ventaActual);
+                    ((FramePrincipal) SwingUtilities.getWindowAncestor(panelPrincipalVentas)).mostrarPanelEmergente(ventaPago1);
+                    ventaPago1.requestFocus();
+                }
             }
         };
         gbc.gridx=1;
@@ -1296,6 +1301,11 @@ public class PanelDeVentas extends JPanel implements PropertyChangeListener{
             totalDescuento+=dv.getDescuento();
             totalImpuestos+=dv.getImpuestos();
             Total+=dv.getTotal();
+        }
+        if (Total>0){
+            btnPago.activarBoton();
+        }else{
+            btnPago.desactivarBoton();
         }
         lblItem.setText(String.format("<html><body style='text-align: center;'># ITEMS<br>%d</body></html>",detalleVentas.size()));
         lblSubtotal.setText(String.format("<html><body style='text-align: center;'>SUBTOTAL<br>S/. %.2f</body></html>", totalSubtotal));

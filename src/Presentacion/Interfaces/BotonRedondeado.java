@@ -17,6 +17,8 @@ import javax.swing.JLabel;
 public class BotonRedondeado extends PanelRedondeado{
 
     JLabel lblBoton;
+    Color colorBaseDeBoton;
+    private boolean estado=true;
     
     public BotonRedondeado(int radio, int grosorBorde, Color colorBoton) {
         super(radio,grosorBorde,new Color(0,0,0,0),colorBoton);
@@ -46,8 +48,10 @@ public class BotonRedondeado extends PanelRedondeado{
             }
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                activarColorBoton();
-                lblBoton.setForeground(Color.WHITE);
+                if(estado){
+                    activarColorBoton();
+                    lblBoton.setForeground(Color.WHITE);
+                }
             }
 
             @Override
@@ -63,6 +67,7 @@ public class BotonRedondeado extends PanelRedondeado{
 
     public BotonRedondeado(int radio, int grosorBorde, Color colorBoton,String textoDeBoton, Font fuente) {
         this(radio,grosorBorde,colorBoton);
+        colorBaseDeBoton=colorBoton;
         lblBoton.setText("<html><body style='word-wrap: break-word;'>"+textoDeBoton+"</body></html>");
         lblBoton.setFont(fuente);
     }
@@ -84,4 +89,28 @@ public class BotonRedondeado extends PanelRedondeado{
     public JLabel getLblBoton() {
         return lblBoton;
     }
+    
+    public void activarBoton(){
+        setColorBorde(colorBaseDeBoton);
+        lblBoton.setForeground(colorBaseDeBoton);
+        estado=true;
+        repaint();
+    }
+    
+    public void desactivarBoton(){
+        setColorBorde(Color.LIGHT_GRAY);
+        lblBoton.setForeground(Color.LIGHT_GRAY);
+        estado=false;
+        repaint();
+    }
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+    
+    
 }

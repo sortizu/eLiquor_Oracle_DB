@@ -27,7 +27,10 @@ import Presentacion.Interfaces.Ventas.Ventas;
 import Presentacion.Interfaces.Configuracion.Configuracion;
 import Presentacion.Interfaces.Ventas.PanelDeVentas;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
+import javax.swing.JLabel;
 /**
  *
  * @author sortizu
@@ -35,6 +38,8 @@ import java.awt.Toolkit;
 public class FramePrincipal extends javax.swing.JFrame {
 
     CardLayout layoutContenedorPaneles;
+    public static boolean overlayConsole=false;
+    public static String overlayConsoleText = "";
     
     public FramePrincipal() {
         initComponents();
@@ -76,7 +81,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         //Inicio de zona de debug
         {
         UtilidadSesion.nombreUsuarioActual="Debug";
-        
+        //overlayConsole=true;
         //Cambiar a partir de aqui
 
         
@@ -137,7 +142,17 @@ public class FramePrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         Fondo = new PanelImagen("/Presentacion/Imagenes/FondoBlanco.png");
-        ContenedorPaneles = new javax.swing.JPanel();
+        ContenedorPaneles = new javax.swing.JPanel(){
+            @Override
+            public void paintComponent(Graphics g){
+                if (overlayConsole){
+                    Graphics2D g2d = (Graphics2D)g;
+                    g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                    g2d.drawString(">"+overlayConsoleText, 5, 15);
+                }
+                super.paintComponent(g);
+            }
+        };
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -199,6 +214,11 @@ public class FramePrincipal extends javax.swing.JFrame {
         overlay.setVisible(true);
     }
 
+    public void imprimirMensaje(String msj){
+        overlayConsoleText = msj;
+        ContenedorPaneles.repaint();
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ContenedorPaneles;
     private javax.swing.JPanel Fondo;
