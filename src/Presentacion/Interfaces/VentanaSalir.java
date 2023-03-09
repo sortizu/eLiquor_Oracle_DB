@@ -15,6 +15,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -73,6 +76,11 @@ public class VentanaSalir extends VentanaEmergente{
         if(opcionSeleccionada==0){
             Conexion cn=FramePrincipal.conexion;
             cn.setStaticRootConfiguration();
+            try {
+                cn.Conectar();
+            } catch (SQLException ex) {
+                Logger.getLogger(VentanaSalir.class.getName()).log(Level.SEVERE, null, ex);
+            }
             Container cardPanel = parent.getParent();
             CardLayout layout= (CardLayout) cardPanel.getLayout();
             layout.show(cardPanel, "login");

@@ -127,15 +127,14 @@ public class EliminarUsuarios extends VentanaEmergente{
     
     @Override
     public void btnAceptarPresionado(MouseEvent evt) {
-        panelPrincipalDeModuloDeUsuarios.usuarios.removeAll(UsuariosABorrar);
         for (int i = filasSeleccionadas.length-1;i>=0;i--) {
-            Usuario UsuarioABorrar = panelPrincipalDeModuloDeUsuarios.usuarios.get(i);
+            Usuario UsuarioABorrar = panelPrincipalDeModuloDeUsuarios.usuarios.get(filasSeleccionadas[i]);
             if (UsuarioABorrar.getIdUsuario()==UtilidadSesion.idUsuarioActual){
                     continue;
                     }
             panelPrincipalDeModuloDeUsuarios.eliminarUsuarioDeLaTabla(filasSeleccionadas[i]);
         }
-        
+        panelPrincipalDeModuloDeUsuarios.usuarios.removeAll(UsuariosABorrar);
         ControlUsuarios.eliminarUsuarios(UsuariosABorrar);
         ((FramePrincipal)((JFrame) SwingUtilities.getWindowAncestor(this))).cerrarPanelesEmergentes();
     }
