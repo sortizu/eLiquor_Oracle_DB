@@ -1,9 +1,11 @@
 package Presentacion.Interfaces.Reportes;
 
 import Datos.Entidades.Cliente;
+import Datos.Entidades.Configuracion;
 import Datos.Entidades.DetalleVenta;
 import Datos.Entidades.Usuario;
 import Datos.Entidades.Venta;
+import Negocio.ControlConfiguracion;
 import Negocio.ControlReportes;
 import Presentacion.Interfaces.BotonRedondeado;
 import Presentacion.Interfaces.BotonRedondeadoMultiple;
@@ -13,6 +15,7 @@ import Presentacion.Interfaces.ScrollBarCustom;
 import Presentacion.Interfaces.TablaDefault;
 import Presentacion.Interfaces.TextFieldRedondeado;
 import Presentacion.Interfaces.ToolTipIcon;
+import Presentacion.Utilidades.UtilidadSesion;
 import Presentacion.Utilidades.UtilidadesFuentes;
 import java.awt.Color;
 import java.awt.Container;
@@ -26,6 +29,7 @@ import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -81,6 +85,7 @@ public class PanelDeReportes extends JPanel{
     private JLabel lblValTotCosto;
     private JLabel lblValUtilNeta;
     
+    private BotonRedondeado btnGuardarCambios;
     private BotonRedondeadoMultiple botonesAccionReporte;
     private PanelDeReportes panelPrincipalReportes;
     
@@ -849,16 +854,19 @@ public class PanelDeReportes extends JPanel{
     }
     
     private void iniciarComponentesCuerpoInferior(int width, int height){
-        /*GridBagConstraints gbc = new GridBagConstraints();
-        botonesAccionReporte=new BotonRedondeadoMultiple((int)(20.0/panelModuloReportes.basePanelHeight*height), (int)Math.ceil(3.0/panelModuloReportes.basePanelHeight*height), Color.decode("#8C8C8C"), new String[]{"EXPORTAR","IMPRIMIR"},UtilidadesFuentes.InterRegular.deriveFont((float)(28.0/panelModuloReportes.basePanelHeight*height)),new Dimension((int)(235.0/panelModuloReportes.basePanelWidth*width),(int)(75.0/panelModuloReportes.basePanelHeight*height))){
+        GridBagConstraints gbc = new GridBagConstraints();
+        btnGuardarCambios = new BotonRedondeado(10, 3, Color.decode("#8C8C8C"),"Exportar Reporte",UtilidadesFuentes.InterRegular.deriveFont(20.0f)){
             @Override
-            public void botonOpcionPresionado(int opcionPresionada) {
-                if(opcionPresionada==0){
-                    ExportarReporte exportarReporte = new ExportarReporte(panelModuloReportes);
-                    ((FramePrincipal) SwingUtilities.getWindowAncestor(panelPrincipalReportes)).mostrarPanelEmergente(exportarReporte);
-                exportarReporte.requestFocus();
+            public void botonPresionado() {
+                JFileChooser fileChooser = new JFileChooser();
+                int response = fileChooser.showSaveDialog(null);
+                if(response==JFileChooser.APPROVE_OPTION){
+                    String nombreArchivo = fileChooser.getSelectedFile().getName();
+                    String baseDIR = fileChooser.getSelectedFile().getAbsolutePath();
+                    String newDIR = baseDIR.substring(0,baseDIR.length()-nombreArchivo.length());
+                    ControlReportes.exportarRegistro(fechaInicio, fechaFin, newDIR, nombreArchivo);
                 }
-            }        
+            }
         };
         gbc.insets=new Insets((int)(15.0/panelModuloReportes.basePanelHeight*height),0, 0, 0);
         gbc.gridx=0;
@@ -867,7 +875,7 @@ public class PanelDeReportes extends JPanel{
         gbc.anchor=GridBagConstraints.PAGE_START;
         gbc.weightx=0;
         gbc.weighty=1.0;
-        cuerpo.add(botonesAccionReporte,gbc);*/
+        cuerpo.add(btnGuardarCambios,gbc);
     }
     
     private void actualizarResumen(){

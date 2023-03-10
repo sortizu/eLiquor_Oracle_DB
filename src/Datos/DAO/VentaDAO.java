@@ -284,4 +284,19 @@ public class VentaDAO implements CRUD {
          }
         return numeroDeClientesRegistrados;
     }
+    
+    public void exportarVenta(LocalDate fechaInicio, LocalDate fechaFin,String dir, String nombreDeArchivo){
+        String sql = "BEGIN ROOT.SP_EXPORTAR_VENTAS(?,?,?,?); END;";
+        try{
+            
+            ps = con.prepareStatement(sql);
+            ps.setDate(1, java.sql.Date.valueOf(fechaInicio));
+            ps.setDate(2, java.sql.Date.valueOf(fechaFin));
+            ps.setString(3, dir);
+            ps.setString(4, nombreDeArchivo);
+            ps.executeUpdate();
+        }catch(SQLException e){
+             System.out.println(e.toString());
+         }
+    }
 }

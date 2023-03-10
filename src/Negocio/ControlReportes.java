@@ -81,6 +81,11 @@ public class ControlReportes {
         return null;
     }
     
+    
+    public static void exportarRegistro(LocalDate fechaInicio, LocalDate fechaFin,String dir, String nombreDeArchivo){
+    VentaDAO vdao = new VentaDAO();
+    vdao.exportarVenta(fechaInicio, fechaFin, dir, nombreDeArchivo);
+    }
     /*
     Este metodo carga detalles basicos del supuesto detalle Venta 
     de la venta registrada. Sin embargo, no es capaz de recuperar
